@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Vehicle Details | EV Fleet Intelligence</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                EV
+            </div>
+
+            <div class="brand-text">
+
+                <h1>
+                    EV Fleet Intelligence
+                </h1>
+
+                <span>
+                    Fleet Operations Platform
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="main-nav">
+
+            <a
+                href="index.html"
+                class="nav-link">
+                Dashboard
+            </a>
+
+            <a
+                href="vehicles.html"
+                class="nav-link">
+                Vehicles
+            </a>
+
+            <a
+                href="analytics.html"
+                class="nav-link">
+                Analytics
+            </a>
+
+            <a
+                href="maintenance.html"
+                class="nav-link">
+                Maintenance
+            </a>
+
+            <a
+                href="attention.html"
+                class="nav-link">
+                Attention
+            </a>
+
+        </nav>
+        
+        <div class="global-search">
+
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search vehicles..."
+                autocomplete="off">
+
+        </div>
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                System Operational
+            </span>
+
+        </div>
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle theme"
+                title="Toggle theme"
+            >
+                <span id="themeIcon">☾</span>
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button">
+                Logout
+            </button>
+
+    </header>
+
+    <main class="dashboard-container">
+
+            <section class="dashboard-header">
+
+                <div>
+
+                    <span class="section-label">
+                        VEHICLE INTELLIGENCE
+                    </span>
+
+                    <h2 id="selectedVehicle">
+                        Vehicle Details
+                    </h2>
+
+                    <p>
+                        Detailed telemetry, battery health,
+                        AI analysis and maintenance intelligence.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-meta">
+
+                    <span>
+                        VEHICLE STATUS
+                    </span>
+
+                    <strong>
+                        Monitoring
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+         <section
+            class="vehicle-details"
+            id="vehicleDetails">
+
+
+            <div class="details-grid">
+
+                <div class="detail-card">
+                    <span>Battery Health</span>
+                    <strong id="detailHealth">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Battery Voltage</span>
+                    <strong id="detailVoltage">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Battery Current</span>
+                    <strong id="detailCurrent">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Battery Temperature</span>
+                    <strong id="detailBatteryTemp">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Motor Temperature</span>
+                    <strong id="detailMotorTemp">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Vehicle Speed</span>
+                    <strong id="detailSpeed">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Odometer</span>
+                    <strong id="detailOdometer">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Charging Cycles</span>
+                    <strong id="detailCycles">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Fault Status</span>
+                    <strong id="detailFault">--</strong>
+                </div>
+
+                <div class="detail-card">
+                    <span>Maintenance Risk</span>
+                    <strong id="detailRisk">--</strong>
+                </div>
+
+            </div>
+
+
+            <div class="recommendation">
+
+                <h3>
+                    Recommendation
+                </h3>
+
+                <p id="detailRecommendation">
+                    --
+                </p>
+
+            </div>
+
+
+            <div class="ai-analysis">
+
+                <div class="analysis-header">
+
+                    <h3>
+                        AI Fault Analysis
+                    </h3>
+
+                </div>
+
+                <button id="analyzeButton">
+                    Run AI Analysis
+                </button>
+
+                <div id="aiResult"></div>
+
+            </div>
+
+
+            <div class="telemetry-history">
+
+                <h3>
+                    Telemetry History
+                </h3>
+
+                <div class="history-chart">
+                    <canvas id="temperatureChart"></canvas>
+                </div>
+
+                <div class="history-chart">
+                    <canvas id="socChart"></canvas>
+                </div>
+
+                <div class="history-chart">
+                    <canvas id="voltageChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <div class="anomaly-analysis">
+
+                <div class="analysis-header">
+
+                    <h3>
+                        Anomaly Detection
+                    </h3>
+
+                </div>
+
+                <button id="anomalyButton">
+                    Check Anomalies
+                </button>
+
+                <div id="anomalyResult"></div>
+
+            </div>
+
+
+            <div class="maintenance-analysis">
+
+                <div class="analysis-header">
+
+                    <h3>
+                        Predictive Maintenance
+                    </h3>
+
+                    
+                </div>
+
+                <button id="maintenanceButton">
+                    Calculate Maintenance Risk
+                </button>
+
+                <div id="maintenanceResult"></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="script.js"></script>
+    <script>
+        requireAuthentication();
+    </script>
+
+
+</body>
+
+</html>

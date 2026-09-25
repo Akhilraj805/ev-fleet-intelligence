@@ -1,0 +1,1892 @@
+/* =========================CSS=============================
+   EV FLEET INTELLIGENCE — COMMAND CENTER
+   Aerospace-Grade High-Tech Fleet Telemetry System
+   ========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap");
+
+:root {
+    /* Base Color Tokens */
+    --bg: #070c12;
+    --surface: #0c131d;
+    --surface-2: #111a26;
+    --surface-3: #172332;
+    --surface-hover: #1c2b3d;
+    --surface-glass: rgba(12, 19, 29, 0.78);
+
+    /* High-Tech Borders */
+    --border: rgba(43, 62, 85, 0.48);
+    --border-light: rgba(73, 102, 138, 0.65);
+    --border-focus: rgba(45, 227, 142, 0.55);
+
+    /* Typography */
+    --text: #f0f4f8;
+    --text-secondary: #96a6b8;
+    --text-muted: #5e7185;
+
+    /* Telemetry Accents & Glows */
+    --accent: #2de38e;
+    --accent-glow: rgba(45, 227, 142, 0.35);
+    --accent-soft: rgba(45, 227, 142, 0.12);
+
+    --danger: #ff4d5a;
+    --danger-glow: rgba(255, 77, 90, 0.35);
+    --danger-soft: rgba(255, 77, 90, 0.14);
+
+    --warning: #ffb733;
+    --warning-glow: rgba(255, 183, 51, 0.35);
+    --warning-soft: rgba(255, 183, 51, 0.14);
+
+    --blue: #4fa1ff;
+    --blue-glow: rgba(79, 161, 255, 0.35);
+    --blue-soft: rgba(79, 161, 255, 0.14);
+
+    /* Radii & Shadows */
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 18px;
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 18px 45px rgba(0, 0, 0, 0.5);
+
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* =========================================================
+   GLOBAL RESET & HIGH-TECH AMBIENT CANVAS
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    min-height: 100vh;
+
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(ellipse 70% 50% at 50% -8%, rgba(45, 227, 142, 0.08), transparent 60%),
+        radial-gradient(circle at 92% 12%, rgba(79, 161, 255, 0.06), transparent 38%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+    background-attachment: fixed;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-light);
+}
+
+button,
+input,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   TOP NAVIGATION BAR (GLASSMORPHIC)
+   ========================================================= */
+
+.topbar {
+    height: 72px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 0 36px;
+
+    background: rgba(8, 13, 19, 0.82);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Brand Identity */
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 250px;
+    flex-shrink: 0;
+}
+
+.brand-mark {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(45, 227, 142, 0.4);
+    border-radius: 10px;
+
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+
+    background: linear-gradient(135deg, rgba(45, 227, 142, 0.18), rgba(45, 227, 142, 0.05));
+    box-shadow: 0 0 16px rgba(45, 227, 142, 0.2), inset 0 0 8px rgba(45, 227, 142, 0.1);
+}
+
+.brand-text h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    color: var(--text);
+}
+
+.brand-text span {
+    display: block;
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+}
+
+/* Nav Links */
+
+.main-nav {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-link {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+
+    border-bottom: 2px solid transparent;
+    position: relative;
+    transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.nav-link:hover {
+    color: var(--text);
+}
+
+.nav-link.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    text-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* Global Search & Spacing Safeguard */
+
+.global-search {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-left: auto;
+}
+
+.global-search input {
+    width: 200px;
+    height: 36px;
+    padding: 0 14px;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    color: var(--text);
+    font-size: 13px;
+    outline: none;
+
+    transition: all 0.25s var(--ease-out);
+}
+
+.global-search input::placeholder {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.global-search input:focus {
+    width: 240px;
+    background: var(--surface-3);
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-soft), 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* System Live Status */
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow:
+        0 0 0 3px var(--accent-soft),
+        0 0 14px var(--accent);
+    animation: radar-ping 2.4s infinite ease-in-out;
+}
+
+@keyframes radar-ping {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 3px var(--accent-soft), 0 0 14px var(--accent);
+    }
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 6px rgba(45, 227, 142, 0.2), 0 0 20px var(--accent);
+    }
+}
+
+
+/* =========================================================
+   CONTAINERS & HEADER TYPOGRAPHY
+   ========================================================= */
+
+.dashboard-container {
+    width: min(94%, 1440px);
+    margin: 0 auto;
+    padding: 34px 0 70px;
+}
+
+.dashboard-container > section,
+section {
+    margin-bottom: 26px;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 26px;
+}
+
+.section-label {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+
+    background: linear-gradient(
+        135deg,
+        var(--text) 40%,
+        var(--text-secondary) 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dashboard-header p {
+    max-width: 640px;
+    margin: 8px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.dashboard-meta {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.dashboard-meta span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.dashboard-meta strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.section-heading h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+}
+
+.section-action {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    transition: opacity 0.2s ease, text-shadow 0.2s ease;
+}
+
+.section-action:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 10px var(--accent-glow);
+}
+
+
+/* =========================================================
+   FLEET TELEMETRY METRIC CARDS
+   ========================================================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 26px;
+}
+
+.card {
+    min-height: 146px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 22px;
+
+    background: linear-gradient(145deg, rgba(18, 27, 38, 0.95), rgba(12, 19, 29, 0.98));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+
+    position: relative;
+    overflow: hidden;
+
+    transition: transform 0.25s var(--ease-out), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    bottom: -40px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    filter: blur(28px);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.stats .card:nth-child(2)::after {
+    background: var(--blue-soft);
+}
+
+.stats .card:nth-child(3)::after {
+    background: var(--warning-soft);
+}
+
+.stats .card:nth-child(4)::after {
+    background: var(--danger-soft);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-light);
+    box-shadow: var(--shadow-md);
+}
+
+.card:hover::after {
+    transform: scale(1.3);
+}
+
+.metric-label {
+    position: relative;
+    z-index: 1;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+}
+
+.metric-value {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 12px 0 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -1.2px;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+}
+
+.metric-description {
+    position: relative;
+    z-index: 1;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.risk-value {
+    color: var(--danger);
+    text-shadow: 0 0 14px var(--danger-glow);
+}
+
+
+/* =========================================================
+   SURFACE CONTAINERS & RISK OVERVIEW
+   ========================================================= */
+
+.risk-overview,
+.chart-card,
+.temperature-card,
+.dashboard-vehicle-preview,
+.vehicles-page,
+.attention-page,
+.analytics-insights,
+.maintenance-risk-overview {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.risk-overview:hover,
+.chart-card:hover,
+.temperature-card:hover {
+    border-color: var(--border-light);
+}
+
+.risk-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.risk-card {
+    min-height: 120px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.risk-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-light);
+}
+
+.risk-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.risk-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.risk-card strong {
+    display: block;
+    margin-top: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.risk-card > span:last-child {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Color Coding for Risk Cards */
+
+.risk-card.high {
+    border-color: rgba(255, 77, 90, 0.28);
+}
+
+.risk-card.high .risk-indicator {
+    background: var(--danger);
+    box-shadow: 0 0 12px var(--danger);
+}
+
+.risk-card.high strong {
+    color: var(--danger);
+}
+
+.risk-card.medium {
+    border-color: rgba(255, 183, 51, 0.28);
+}
+
+.risk-card.medium .risk-indicator {
+    background: var(--warning);
+    box-shadow: 0 0 12px var(--warning);
+}
+
+.risk-card.medium strong {
+    color: var(--warning);
+}
+
+.risk-card.low {
+    border-color: rgba(45, 227, 142, 0.25);
+}
+
+.risk-card.low .risk-indicator {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+}
+
+.risk-card.low strong {
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   ATTENTION VEHICLES (DASHBOARD)
+   ========================================================= */
+
+.attention {
+    margin-top: 12px;
+}
+
+.attention-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.attention-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.attention-item {
+    display: grid;
+    grid-template-columns: 85px 75px minmax(85px, 1fr) minmax(85px, 1fr) minmax(85px, 1fr) 110px 100px;
+    grid-template-areas: "vehicle risk score health cycles reasons action";
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    min-width: 0;
+    padding: 13px 18px;
+    margin-bottom: 9px;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font-size: 12px;
+    position: relative;
+    overflow: visible;
+
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.attention-item:hover {
+    border-color: var(--border-light);
+    background: var(--surface-3);
+    transform: translateY(-1px);
+}
+
+.attention-item > strong {
+    grid-area: vehicle;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.attention-item > .risk-status {
+    grid-area: risk;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--danger);
+    text-transform: uppercase;
+}
+
+.attention-item > span:nth-of-type(1),
+.attention-item > span:nth-of-type(2),
+.attention-item > span:nth-of-type(3) {
+    color: var(--text-secondary);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+}
+
+.attention-item > span:nth-of-type(1) { grid-area: score; }
+.attention-item > span:nth-of-type(2) { grid-area: health; }
+.attention-item > span:nth-of-type(3) { grid-area: cycles; }
+
+.attention-item > .reasons-container {
+    grid-area: reasons;
+    position: relative;
+    width: 100%;
+}
+
+.attention-item > .view-vehicle {
+    grid-area: action;
+    width: 100%;
+    justify-self: end;
+}
+
+/* Inline Reason Details */
+
+.attention-item .reason-details {
+    display: none;
+    position: static;
+
+    width: 100%;
+    max-width: 100%;
+
+    margin-top: 8px;
+    padding: 12px 14px;
+
+    background: var(--surface-3);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.6;
+
+    box-shadow: none;
+}
+
+.attention-item .reason-details.show {
+    display: block;
+}
+
+.attention-item .reason-details.show {
+    display: block;
+}
+
+@keyframes popup-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   COMMAND CENTER BUTTONS & MICRO-INTERACTIONS
+   ========================================================= */
+
+button,
+.view-reasons,
+.view-vehicle,
+.vehicle-action,
+.view-more-button,
+.maintenance-reasons-button,
+.analysis-hide-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 8px 14px;
+    background: var(--surface-3);
+    border: 1px solid var(--border-light);
+    border-radius: 7px;
+
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition: all 0.2s var(--ease-out);
+}
+
+button:hover,
+.view-reasons:hover,
+.view-vehicle:hover,
+.vehicle-action:hover,
+.view-more-button:hover,
+.maintenance-reasons-button:hover,
+.analysis-hide-button:hover {
+    background: var(--accent-soft);
+    border-color: rgba(45, 227, 142, 0.45);
+    color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-soft);
+}
+
+button:active,
+.view-reasons:active,
+.view-vehicle:active {
+    transform: scale(0.97);
+}
+
+.view-reasons {
+    width: 100%;
+    padding: 7px 10px;
+}
+
+.view-vehicle {
+    padding: 7px 10px;
+}
+
+
+/* =========================================================
+   ANALYTICS & CHART CONTAINERS
+   ========================================================= */
+
+.analytics {
+    margin-top: 24px;
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    align-items: stretch;
+}
+
+.chart-card {
+    min-height: 330px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-header {
+    margin-bottom: 16px;
+}
+
+.chart-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.chart-header span {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+/* Canvas Responsiveness */
+
+.chart-card canvas {
+    display: block;
+    max-width: 100%;
+}
+
+.chart-card:first-child canvas {
+    width: 230px !important;
+    height: 230px !important;
+    max-width: 100%;
+    margin: auto;
+}
+
+.chart-card:nth-child(2) canvas {
+    width: 100% !important;
+    height: 220px !important;
+    margin-top: auto;
+}
+
+.telemetry-history {
+    width: 100%;
+    margin-top: 22px;
+}
+
+.history-chart {
+    width: 100%;
+    height: 310px;
+    margin-top: 14px;
+    padding: 16px;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.history-chart canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+
+/* =========================================================
+   TEMPERATURE MONITORING
+   ========================================================= */
+
+.temperature-card {
+    margin-top: 18px;
+}
+
+.temperature-header {
+    margin-bottom: 16px;
+}
+
+.temperature-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.temperature-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.temperature-stats > div {
+    padding: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.temperature-stats span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.temperature-stats strong {
+    display: block;
+    margin-top: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   VEHICLE LIST & PREVIEW
+   ========================================================= */
+
+#vehicleList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.vehicle-item {
+    display: grid;
+    grid-template-columns: 90px 1fr 95px auto;
+    align-items: center;
+    gap: 14px;
+
+    min-height: 70px;
+    padding: 14px 18px;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.vehicle-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-light);
+    background: var(--surface-3);
+}
+
+.vehicle-id {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.vehicle-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.vehicle-health {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fleet-view-more {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* Dedicated Vehicles Page Grid */
+
+.vehicles-page #vehicleList {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: 20px;
+}
+
+.vehicles-page .vehicle {
+    padding: 18px 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    color: var(--text);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.vehicles-page .vehicle:hover {
+    transform: translateY(-2px);
+    background: var(--surface-3);
+    border-color: var(--border-light);
+}
+
+#highRiskVehicles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+}
+
+
+/* =========================================================
+   VEHICLE DETAILS & TELEMETRY PROFILE
+   ========================================================= */
+
+.vehicle-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.vehicle-page-header h2 {
+    margin: 4px 0 8px;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    color: var(--text);
+}
+
+.vehicle-page-header p {
+    margin: 0;
+    max-width: 650px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.vehicle-page-header .dashboard-meta {
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.vehicle-page-header .dashboard-meta span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 1.4px;
+}
+
+.vehicle-page-header .dashboard-meta strong {
+    color: var(--accent);
+    font-size: 15px;
+}
+
+.vehicle-details {
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.detail-card {
+    padding: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.detail-card span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+.detail-card strong {
+    display: block;
+    margin-top: 7px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ANALYSIS & AI DIAGNOSTIC SECTIONS
+   ========================================================= */
+
+.analysis-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.analysis-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.recommendation,
+.ai-analysis,
+.telemetry-history,
+.anomaly-analysis,
+.maintenance-analysis {
+    margin-top: 14px;
+    padding: 22px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.recommendation h3,
+.ai-analysis h3,
+.anomaly-analysis h3,
+.maintenance-analysis h3 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.recommendation p,
+#aiResult,
+#anomalyResult,
+#maintenanceResult {
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+#aiResult,
+#anomalyResult,
+#maintenanceResult {
+    display: none;
+    margin-top: 14px;
+}
+
+#aiResult.show,
+#anomalyResult.show,
+#maintenanceResult.show {
+    display: block;
+    animation: popup-fade 0.25s var(--ease-out);
+}
+
+.anomaly-summary {
+    margin: 18px 0;
+    padding: 18px;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.anomaly-summary > strong {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.anomaly-summary p {
+    margin-bottom: 14px;
+}
+
+.anomaly-summary-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+}
+
+.anomaly-summary-item strong {
+    min-width: 30px;
+    text-align: right;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.analytics-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.analytics-info-grid .detail-card {
+    min-height: 100px;
+    padding: 20px;
+}
+
+.analytics-info-grid .detail-card span {
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.analytics-info-grid .detail-card strong {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+
+/* =========================================================
+   MAINTENANCE WORKSPACE
+   ========================================================= */
+
+.maintenance-vehicles #maintenanceVehicleList {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.maintenance-vehicle-item {
+    display: flex;
+    align-items: center;
+    gap: 14px 22px;
+    flex-wrap: wrap;
+
+    padding: 16px 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.maintenance-vehicle-item:hover {
+    transform: translateY(-2px);
+    background: var(--surface-3);
+    border-color: var(--border-light);
+}
+
+.maintenance-vehicle-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 140px;
+}
+
+.maintenance-vehicle-info strong {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.risk-status {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.maintenance-score,
+.maintenance-health,
+.maintenance-fault,
+.maintenance-anomalies {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.maintenance-score span,
+.maintenance-health span,
+.maintenance-fault span,
+.maintenance-anomalies span {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.maintenance-score strong,
+.maintenance-health strong,
+.maintenance-fault strong,
+.maintenance-anomalies strong {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--text);
+}
+
+.maintenance-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.maintenance-reasons {
+    display: none;
+    width: 100%;
+    flex-basis: 100%;
+
+    margin-top: 12px;
+    padding: 16px;
+
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    animation: popup-fade 0.2s var(--ease-out);
+}
+
+.maintenance-reasons.show {
+    display: block;
+}
+
+.maintenance-reasons-list {
+    margin-top: 8px;
+}
+
+.maintenance-reasons-list p {
+    margin: 6px 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.maintenance-recommendation {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--text);
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ATTENTION PAGE LIST
+   ========================================================= */
+
+#attentionVehicleList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.attention-page-item {
+    display: grid;
+    grid-template-columns: 140px 1fr 220px auto;
+    align-items: center;
+    gap: 16px;
+
+    padding: 16px 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.attention-page-item:hover {
+    background: var(--surface-3);
+    border-color: var(--border-light);
+}
+
+.attention-vehicle-main {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.attention-vehicle-main strong {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 15px;
+}
+
+.attention-risk {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.attention-risk.high {
+    color: var(--danger);
+}
+
+.attention-risk.medium {
+    color: var(--warning);
+}
+
+.attention-vehicle-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+}
+
+.attention-vehicle-metrics span {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.attention-vehicle-metrics strong {
+    margin-left: 4px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--text);
+}
+
+.attention-reasons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.attention-reasons > span {
+    margin-bottom: 2px;
+    color: var(--text-muted);
+    font-size: 10px;
+}
+
+.attention-reasons .reason-details {
+    display: none;
+    margin-top: 8px;
+    padding: 12px 14px;
+    background: var(--surface-3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.attention-reasons .reason-details.show {
+    display: block;
+    animation: popup-fade 0.2s var(--ease-out);
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN SYSTEM
+   ========================================================= */
+
+/* Breakpoint: 1100px */
+@media (max-width: 1100px) {
+
+    .topbar {
+        height: auto;
+        min-height: 72px;
+        display: grid;
+        grid-template-columns: auto minmax(160px, 1fr) auto;
+        gap: 12px;
+        padding: 12px 20px;
+    }
+
+    .brand {
+        min-width: 0;
+    }
+
+    .global-search {
+        width: 100%;
+        margin-left: 0;
+        gap: 16px;
+    }
+
+    .global-search input {
+        width: 100%;
+    }
+
+    .global-search input:focus {
+        width: 100%;
+    }
+
+    .main-nav {
+        grid-column: 1 / -1;
+        width: 100%;
+        height: 40px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .main-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-link {
+        height: 40px;
+        flex: 0 0 auto;
+        padding: 0 14px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .details-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .analytics-info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .temperature-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vehicles-page #vehicleList {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .attention-item {
+        grid-template-columns: minmax(70px, 1fr) auto minmax(90px, 1fr) minmax(90px, 1fr);
+        grid-template-areas:
+            "vehicle risk score health"
+            "cycles cycles reasons action";
+        gap: 10px;
+        padding: 12px 14px;
+    }
+
+    .attention-page-item {
+        grid-template-columns: 120px 1fr auto;
+    }
+
+    .attention-reasons {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Breakpoint: 900px */
+@media (max-width: 900px) {
+
+    .charts {
+        grid-template-columns: 1fr;
+    }
+
+    .maintenance-vehicles #maintenanceVehicleList {
+        grid-template-columns: 1fr;
+    }
+
+    #vehicleList,
+    .vehicles-page #vehicleList {
+        grid-template-columns: 1fr;
+    }
+
+    .history-chart {
+        height: 260px;
+        padding: 12px;
+    }
+
+    .attention-page-item {
+        grid-template-columns: 1fr auto;
+    }
+
+    .attention-vehicle-metrics {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Breakpoint: 768px */
+@media (max-width: 768px) {
+
+    .dashboard-container {
+        width: calc(100% - 24px);
+        padding-top: 20px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .dashboard-meta {
+        text-align: left;
+    }
+
+    .dashboard-header h2 {
+        font-size: 24px;
+    }
+
+    .vehicle-page-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .vehicle-page-header .dashboard-meta {
+        text-align: left;
+    }
+
+    .risk-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .details-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .analytics-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Breakpoint: 600px */
+@media (max-width: 600px) {
+
+    .topbar {
+        grid-template-columns: 1fr auto;
+        padding: 10px 14px;
+    }
+
+    .global-search {
+        grid-column: 1 / -1;
+    }
+
+    .system-status {
+        display: none;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .temperature-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .attention-item {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "vehicle risk"
+            "score health"
+            "cycles cycles"
+            "reasons action";
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .attention-item > .risk-status {
+        justify-self: end;
+    }
+
+    .attention-page-item {
+        grid-template-columns: 1fr;
+    }
+
+    .attention-page-item .vehicle-action {
+        justify-self: start;
+    }
+
+    .maintenance-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-left: 0;
+        margin-top: 4px;
+    }
+
+    .history-chart {
+        height: 220px;
+        padding: 10px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Breakpoint: 480px */
+@media (max-width: 480px) {
+
+    .brand-text {
+        display: none;
+    }
+
+    .metric-value {
+        font-size: 28px;
+    }
+
+    .dashboard-header h2 {
+        font-size: 22px;
+    }
+}
+
+/* =========================================================
+   THEME TOGGLE
+   ========================================================= */
+
+.theme-toggle {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-left: 0;
+    flex-shrink: 0;
+
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-light);
+    color: var(--text);
+}
+
+
+/* Light Theme */
+
+html[data-theme="light"] {
+    color-scheme: light;
+
+    --bg: #f3f6f8;
+    --surface: #ffffff;
+    --surface-2: #f8fafb;
+    --surface-3: #eef2f5;
+    --surface-hover: #e7edf1;
+    --surface-glass: rgba(255, 255, 255, 0.88);
+
+    --border: rgba(30, 45, 60, 0.14);
+    --border-light: rgba(30, 45, 60, 0.24);
+    --border-focus: rgba(24, 170, 105, 0.45);
+
+    --text: #17212b;
+    --text-secondary: #526273;
+    --text-muted: #82909d;
+
+    --accent: #159b61;
+    --accent-glow: rgba(21, 155, 97, 0.22);
+    --accent-soft: rgba(21, 155, 97, 0.10);
+
+    --danger: #dc3d49;
+    --danger-glow: rgba(220, 61, 73, 0.22);
+    --danger-soft: rgba(220, 61, 73, 0.10);
+
+    --warning: #c98900;
+    --warning-glow: rgba(201, 137, 0, 0.22);
+    --warning-soft: rgba(201, 137, 0, 0.10);
+
+    --blue: #2778c9;
+    --blue-glow: rgba(39, 120, 201, 0.22);
+    --blue-soft: rgba(39, 120, 201, 0.10);
+
+    --shadow-sm: 0 4px 14px rgba(20, 35, 50, 0.08);
+    --shadow-md: 0 10px 30px rgba(20, 35, 50, 0.10);
+    --shadow-lg: 0 18px 45px rgba(20, 35, 50, 0.14);
+}
+
+
+/* Light theme topbar */
+
+html[data-theme="light"] .topbar {
+    background: rgba(255, 255, 255, 0.92);
+}
+
+
+/* Light theme grid/background effects */
+
+html[data-theme="light"] body {
+    background:
+        radial-gradient(
+            circle at 80% 0%,
+            rgba(21, 155, 97, 0.045),
+            transparent 28%
+        ),
+        var(--bg);
+}
+
+
+/* Toggle hover */
+
+html[data-theme="light"] .theme-toggle:hover {
+    background: var(--surface-hover);
+}
+/* =========================================================
+   DASHBOARD REASON PANEL FIX
+   ========================================================= */
+
+#attentionList .attention-item {
+    height: auto;
+    align-items: center;
+}
+
+#attentionList .reasons-container {
+    height: auto;
+    align-self: center;
+}
+
+#attentionList .reason-details {
+    width: 280px;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+    padding: 10px 12px;
+
+    background: var(--surface-3);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+
+    color: var(--text-secondary);
+    font-size: 10px;
+    line-height: 1.6;
+
+    white-space: normal;
+}
+/* =========================================================
+   LIGHT THEME DASHBOARD CARDS
+   ========================================================= */
+
+html[data-theme="light"] .stats .card {
+    background: var(--surface);
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+html[data-theme="light"] .stats .card:hover {
+    box-shadow: var(--shadow-md);
+}

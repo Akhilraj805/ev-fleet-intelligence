@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EV Fleet Intelligence</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         TOP NAVIGATION
+         ========================================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                EV
+            </div>
+
+            <div class="brand-text">
+                <h1>EV Fleet Intelligence</h1>
+                <span>Fleet Operations Platform</span>
+            </div>
+
+        </div>
+
+
+        <nav class="main-nav">
+
+            <a href="index.html" class="nav-link">
+                Dashboard
+            </a>
+
+            <a href="vehicles.html" class="nav-link">
+                Vehicles
+            </a>
+
+            <a href="analytics.html" class="nav-link">
+                Analytics
+            </a>
+
+            <a href="maintenance.html" class="nav-link">
+                Maintenance
+            </a>
+
+            <a href="attention.html" class="nav-link">
+                Attention  
+            </a>
+
+        </nav>
+        
+        <div class="global-search">
+
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search vehicles..."
+                autocomplete="off">
+
+        </div>
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                System Operational
+            </span>
+
+        </div>
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle theme"
+                title="Toggle theme"
+            >
+                <span id="themeIcon">☾</span>
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button">
+                Logout
+            </button>
+
+    </header>
+
+
+    <!-- =========================================
+         MAIN DASHBOARD
+         ========================================= -->
+
+    <main class="dashboard-container">
+
+
+        <!-- Dashboard Heading -->
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <span class="section-label">
+                    FLEET OVERVIEW
+                </span>
+
+                <h2>
+                    Fleet Command Center
+                </h2>
+
+                <p>
+                    Real-time visibility into vehicle performance,
+                    battery health and maintenance risk.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-meta">
+
+                <span>
+                    DATA STATUS
+                </span>
+
+                <strong>
+                    Live
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             KEY FLEET METRICS
+             ========================================= -->
+
+        <section class="stats">
+
+            <div class="card">
+
+                <span class="metric-label">
+                    TOTAL VEHICLES
+                </span>
+
+                <strong
+                    class="metric-value"
+                    id="totalVehicles">
+                    --
+                </strong>
+
+                <span class="metric-description">
+                    Vehicles monitored
+                </span>
+
+            </div>
+
+
+            <div class="card">
+
+                <span class="metric-label">
+                    AVERAGE BATTERY HEALTH
+                </span>
+
+                <strong
+                    class="metric-value"
+                    id="batteryHealth">
+                    --
+                </strong>
+
+                <span class="metric-description">
+                    Fleet average
+                </span>
+
+            </div>
+
+
+            <div class="card">
+
+                <span class="metric-label">
+                    FAULT RECORDS
+                </span>
+
+                <strong
+                    class="metric-value"
+                    id="faultRecords">
+                    --
+                </strong>
+
+                <span class="metric-description">
+                    Detected telemetry faults
+                </span>
+
+            </div>
+
+
+        <div class="card">
+            <span class="metric-label">
+                HIGH RISK VEHICLES
+            </span>
+
+            <strong class="metric-value risk-value" id="highRisk">
+                0
+            </strong>
+            <span class="metric-description">
+                
+                Vehicles requiring attention
+            </span>
+        </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             FLEET RISK
+             ========================================= -->
+
+        <section class="risk-overview">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        RISK MANAGEMENT
+                    </span>
+
+                    <h2>
+                        Fleet Risk Overview
+                    </h2>
+
+                </div>
+
+                <a
+                    href="maintenance.html"
+                    class="section-action">
+                    View maintenance
+                </a>
+
+            </div>
+
+
+
+            <!-- Risk Cards -->
+
+            <div class="risk-cards">
+
+
+                <div class="risk-card high">
+
+                    <div class="risk-card-header">
+
+                        <span>
+                            HIGH RISK
+                        </span>
+
+                        <span class="risk-indicator"></span>
+
+                    </div>
+
+                    <strong id="highRiskVehicles">
+                        --
+                    </strong>
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                </div>
+
+
+
+                <div class="risk-card medium">
+
+                    <div class="risk-card-header">
+
+                        <span>
+                            MEDIUM RISK
+                        </span>
+
+                        <span class="risk-indicator"></span>
+
+                    </div>
+
+                    <strong id="mediumRiskVehicles">
+                        --
+                    </strong>
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                </div>
+
+
+
+                <div class="risk-card low">
+
+                    <div class="risk-card-header">
+
+                        <span>
+                            LOW RISK
+                        </span>
+
+                        <span class="risk-indicator"></span>
+
+                    </div>
+
+                    <strong id="lowRiskVehicles">
+                        --
+                    </strong>
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Vehicles Requiring Attention -->
+
+            <div class="attention">
+
+                <div class="attention-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            PRIORITY VEHICLES
+                        </span>
+
+                        <h3>
+                            Vehicles Requiring Attention
+                        </h3>
+
+                    </div>
+
+                    <a
+                        href="attention.html"
+                        class="section-action">
+                        View all
+                    </a>
+
+                </div>
+
+
+                <div id="attentionList">
+                    Loading...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             ANALYTICS PREVIEW
+             ========================================= -->
+
+        <section class="analytics">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        FLEET INTELLIGENCE
+                    </span>
+
+                    <h2>
+                        Performance Analytics
+                    </h2>
+
+                </div>
+
+                <a
+                    href="analytics.html"
+                    class="section-action">
+                    Open analytics
+                </a>
+
+            </div>
+
+
+
+            <div class="charts">
+
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <h3>
+                                Fault Distribution
+                            </h3>
+
+                            <span>
+                                Normal vs fault telemetry
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <canvas id="faultChart"></canvas>
+
+                </div>
+
+
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <h3>
+                                Battery Health Distribution
+                            </h3>
+
+                            <span>
+                                Estimated fleet battery condition
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <canvas id="healthChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Temperature Overview -->
+
+            <div class="temperature-card">
+
+
+                <div class="temperature-header">
+
+                    <div>
+
+                        <span class="section-label">
+                            THERMAL MONITORING
+                        </span>
+
+                        <h3>
+                            Temperature Overview
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="temperature-stats">
+
+
+                    <div>
+
+                        <span>
+                            Average Battery Temperature
+                        </span>
+
+                        <strong id="avgBatteryTemp">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Maximum Battery Temperature
+                        </span>
+
+                        <strong id="maxBatteryTemp">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Average Motor Temperature
+                        </span>
+
+                        <strong id="avgMotorTemp">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Maximum Motor Temperature
+                        </span>
+
+                        <strong id="maxMotorTemp">
+                            --
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================================
+             VEHICLE LIST
+             
+             Kept for compatibility with existing
+             JavaScript. This will eventually move
+             completely to vehicles.html.
+             ========================================= -->
+
+        <section
+            class="vehicles dashboard-vehicle-preview">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        FLEET
+                    </span>
+
+                    <h2>
+                        Fleet Vehicles
+                    </h2>
+
+                </div>
+
+        
+
+            </div>
+
+
+            <div id="vehicleList">
+                Loading vehicles...
+            </div>
+        <div class="fleet-view-more">
+
+            <a
+                href="vehicles.html"
+                class="view-more-button">
+                View More
+            </a>
+
+        </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        requireAuthentication();
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | EV Fleet Intelligence</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                EV
+            </div>
+
+            <div class="brand-text">
+
+                <h1>
+                    EV Fleet Intelligence
+                </h1>
+
+                <span>
+                    Fleet Operations Platform
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="main-nav">
+
+            <a
+                href="index.html"
+                class="nav-link">
+                Dashboard
+            </a>
+
+            <a
+                href="vehicles.html"
+                class="nav-link">
+                Vehicles
+            </a>
+
+            <a
+                href="analytics.html"
+                class="nav-link">
+                Analytics
+            </a>
+
+            <a
+                href="maintenance.html"
+                class="nav-link">
+                Maintenance
+            </a>
+
+            <a
+                href="attention.html"
+                class="nav-link">
+                Attention
+            </a>    
+
+        </nav>
+        
+        <div class="global-search">
+
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search vehicles..."
+                autocomplete="off">
+
+        </div>
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                System Operational
+            </span>
+
+        </div>
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle theme"
+                title="Toggle theme"
+            >
+                <span id="themeIcon">☾</span>
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button">
+                Logout
+            </button>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <span class="section-label">
+                    FLEET INTELLIGENCE
+                </span>
+
+                <h2>
+                    Performance Analytics
+                </h2>
+
+                <p>
+                    Detailed analysis of fleet faults,
+                    battery condition and thermal performance.
+                </p>
+
+            </div>
+
+            <div class="dashboard-meta">
+
+                <span>
+                    DATA SOURCE
+                </span>
+
+                <strong>
+                    Live Fleet Data
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section class="charts analytics-page-charts">
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Fault Distribution
+                        </h3>
+
+                        <span>
+                            Normal versus fault telemetry records
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <canvas id="faultChart"></canvas>
+
+            </div>
+
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Battery Health Distribution
+                        </h3>
+
+                        <span>
+                            Distribution of estimated battery condition
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <canvas id="healthChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <section class="temperature-card analytics-temperature">
+
+            <div class="temperature-header">
+
+                <div>
+
+                    <span class="section-label">
+                        THERMAL MONITORING
+                    </span>
+
+                    <h3>
+                        Temperature Overview
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="temperature-stats">
+
+                <div>
+
+                    <span>
+                        Average Battery Temperature
+                    </span>
+
+                    <strong id="avgBatteryTemp">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Maximum Battery Temperature
+                    </span>
+
+                    <strong id="maxBatteryTemp">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Average Motor Temperature
+                    </span>
+
+                    <strong id="avgMotorTemp">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Maximum Motor Temperature
+                    </span>
+
+                    <strong id="maxMotorTemp">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="analytics-insights">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        ANALYTICS
+                    </span>
+
+                    <h2>
+                        Fleet Intelligence
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="analytics-info-grid">
+
+                <div class="detail-card">
+
+                    <span>
+                        Fault Records
+                    </span>
+
+                    <strong id="analyticsFaultRecords">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span>
+                        Normal Records
+                    </span>
+
+                    <strong id="analyticsNormalRecords">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span>
+                        Average Battery Health
+                    </span>
+
+                    <strong id="analyticsBatteryHealth">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-card">
+
+                    <span>
+                        Total Vehicles
+                    </span>
+
+                    <strong id="analyticsTotalVehicles">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+   <script src="script.js"></script>
+
+    <script>
+        requireAuthentication();
+    </script>
+
+</body>
+
+</html>

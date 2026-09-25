@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Attention | EV Fleet Intelligence</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css">
+
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+                EV
+            </div>
+
+            <div class="brand-text">
+
+                <h1>
+                    EV Fleet Intelligence
+                </h1>
+
+                <span>
+                    Fleet Operations Platform
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="main-nav">
+
+            <a
+                href="index.html"
+                class="nav-link">
+                Dashboard
+            </a>
+
+            <a
+                href="vehicles.html"
+                class="nav-link">
+                Vehicles
+            </a>
+
+            <a
+                href="analytics.html"
+                class="nav-link">
+                Analytics
+            </a>
+
+            <a
+                href="maintenance.html"
+                class="nav-link">
+                Maintenance
+            </a>
+
+            <a
+                href="attention.html"
+                class="nav-link">
+                Attention
+            </a>
+
+        </nav>
+        <div class="global-search">
+
+            <input
+                type="text"
+                id="globalSearch"
+                placeholder="Search vehicles..."
+                autocomplete="off">
+
+        </div>
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <span>
+                System Operational
+            </span>
+
+        </div>
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle theme"
+                title="Toggle theme"
+            >
+                <span id="themeIcon">☾</span>
+            </button>
+
+            <button
+                id="logoutButton"
+                class="logout-button"
+                type="button">
+                Logout
+            </button>
+
+    </header>
+
+
+    <main class="dashboard-container">
+
+        <section class="dashboard-header">
+
+            <div>
+
+                <span class="section-label">
+                    VEHICLE ATTENTION
+                </span>
+
+                <h2>
+                    Vehicles Requiring Attention
+                </h2>
+
+                <p>
+                    Review vehicles with elevated maintenance
+                    risk and identify the reasons requiring attention.
+                </p>
+
+            </div>
+
+
+            <div class="dashboard-meta">
+
+                <span>
+                    STATUS
+                </span>
+
+                <strong>
+                    Active Monitoring
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <section class="attention-page">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span class="section-label">
+                        PRIORITY VEHICLES
+                    </span>
+
+                    <h2>
+                        Attention Required
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div id="attentionVehicleList">
+
+                Loading attention data...
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+    <script>
+        requireAuthentication();
+    </script>
+
+
+</body>
+
+</html>
