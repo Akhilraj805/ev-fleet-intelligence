@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pandas
+numpy
+scikit-learn
+joblib
+PyJWT
+pwdlib[argon2]
+python-multipart
+python-dotenv
