@@ -1,18 +1,44 @@
 import sqlite3
 import pandas as pd
+from pathlib import Path
 
+
+# Project paths
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+DB_PATH = BASE_DIR / "data" / "ev_fleet.db"
+CSV_PATH = BASE_DIR / "data" / "ev_telemetry.csv"
+
+
+# Create database automatically if it does not exist
+def initialize_database():
+
+    if DB_PATH.exists():
+        return
+
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    df = pd.read_csv(CSV_PATH)
+
+    with sqlite3.connect(DB_PATH) as connection:
+
+        df.to_sql(
+            "telemetry",
+            connection,
+            if_exists="replace",
+            index=False
+        )
+
+    print("Database created from telemetry CSV.")
+
+
+# Manual database creation / testing
 if __name__ == "__main__":
 
+    connection = sqlite3.connect(DB_PATH)
 
-    # Connect to database
-    connection = sqlite3.connect("data/ev_fleet.db")
+    df = pd.read_csv(CSV_PATH)
 
-
-    # Load telemetry CSV
-    df = pd.read_csv("data/ev_telemetry.csv")
-
-
-    # Store telemetry data in SQLite
     df.to_sql(
         "telemetry",
         connection,
@@ -20,32 +46,35 @@ if __name__ == "__main__":
         index=False
     )
 
-
     print("Database created successfully!")
 
     print("\nTotal telemetry records:")
     print(len(df))
 
-
-    # Check database
     query = "SELECT * FROM telemetry LIMIT 5"
 
-    result = pd.read_sql_query(query, connection)
+    result = pd.read_sql_query(
+        query,
+        connection
+    )
 
     print("\nFirst 5 records:")
     print(result)
 
-
-    # Close connection
     connection.close()
 
+
+# Database connection
 def get_connection():
-    return sqlite3.connect(
-        "data/ev_fleet.db"
-    )
+
+    initialize_database()
+
+    return sqlite3.connect(DB_PATH)
 
 
+# Get all telemetry
 def get_all_telemetry():
+
     connection = get_connection()
 
     df = pd.read_sql_query(
@@ -58,7 +87,9 @@ def get_all_telemetry():
     return df
 
 
+# Get telemetry for one vehicle
 def get_vehicle_telemetry(vehicle_id):
+
     with get_connection() as connection:
 
         df = pd.read_sql_query(
@@ -75,6 +106,7 @@ def get_vehicle_telemetry(vehicle_id):
     return df
 
 
+# Get all vehicle IDs
 def get_vehicle_ids():
 
     with get_connection() as connection:
