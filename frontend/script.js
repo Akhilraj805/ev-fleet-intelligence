@@ -56,6 +56,12 @@ if (themeToggle) {
 
             themeIcon.textContent = "☀";
         }
+        // Rebuild Chart.js charts with the new theme colors
+        if (
+            document.getElementById("healthChart")
+        ) {
+            loadFleetAnalytics();
+        }
     });
 }
 
@@ -296,9 +302,9 @@ async function loadVehicleDetails(vehicleId) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/vehicles/${vehicleId}`
-        );
+            const response = await authenticatedFetch(
+                `${API_URL}/vehicles/${vehicleId}`
+            );
 
             if (!response.ok) {
 
@@ -507,10 +513,9 @@ async function getCurrentVehicleData() {
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/vehicles/${vehicleId}`
-            );
+        const response = await authenticatedFetch(
+            `${API_URL}/vehicles/${vehicleId}`
+        );
 
         if (!response.ok) {
             throw new Error(
@@ -591,20 +596,15 @@ async function runAIAnalysis() {
 
     try {
 
-        const historyResponse =
-            await fetch(
-                `${API_URL}/vehicles/${vehicleId}/history`
-            );
-
+        const historyResponse = await authenticatedFetch(
+            `${API_URL}/vehicles/${vehicleId}/history`
+        );
 
         if (!historyResponse.ok) {
-
             throw new Error(
                 `History request failed: ${historyResponse.status}`
             );
-
         }
-
 
         const historyData =
             await historyResponse.json();
@@ -666,9 +666,9 @@ async function runAIAnalysis() {
         };
 
 
-        const response =
-            await fetch(
-                `${API_URL}/predict`,
+                    const response = await 
+                        authenticatedFetch(
+                        `${API_URL}/predict`,
                 {
                     method: "POST",
 
@@ -763,7 +763,7 @@ async function loadFleetRisk() {
 
     try {
 
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `${API_URL}/fleet/risk`
         );
 
@@ -941,139 +941,698 @@ async function loadFleetRisk() {
     }
 }
 
+
+function getChartThemeColors() {
+
+    const isLight =
+        document.documentElement
+            .getAttribute("data-theme") === "light";
+
+    return {
+        text: isLight
+            ? "#334155"
+            : "#94a3b8",
+
+        label: isLight
+            ? "#1e293b"
+            : "#cbd5e1",
+
+        grid: isLight
+            ? "rgba(100, 116, 139, 0.20)"
+            : "#172233",
+
+        tooltipBackground: isLight
+            ? "#ffffff"
+            : "#0b101b",
+
+        tooltipText: isLight
+            ? "#0f172a"
+            : "#cbd5e1",
+
+        tooltipBorder: isLight
+            ? "#cbd5e1"
+            : "#1e293b"
+    };
+}
+
 // -----------------------------
 // Load Fleet Analytics
 // -----------------------------
 
 async function loadFleetAnalytics() {
 
+    const chartTheme = 
+        getChartThemeColors();
+
     try {
 
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `${API_URL}/fleet/analytics`
         );
 
+        if (!response.ok) {
+            throw new Error(
+                `Analytics API returned ${response.status}`
+            );
+        }
+
         const data = await response.json();
 
-        const faultCanvas =
-            document.getElementById("faultChart");
+
+        // =====================================================
+        // GET REAL RECORD COUNTS
+        // =====================================================
+
+        const summaryResponse = await authenticatedFetch(
+            `${API_URL}/fleet/summary`
+        );
+
+        if (!summaryResponse.ok) {
+            throw new Error(
+                `Summary API returned ${summaryResponse.status}`
+            );
+        }
+
+        const summaryData =
+            await summaryResponse.json();
+
+
+        const normalRecords =
+            summaryData.normal_records || 0;
+
+        const faultRecords =
+            summaryData.fault_records || 0;
+
+
+        // =====================================================
+        // HEALTH CHART
+        // =====================================================
 
         const healthCanvas =
             document.getElementById("healthChart");
 
-        const existingFaultChart =
-            Chart.getChart(faultCanvas);
+        if (
+            typeof Chart !== "undefined" &&
+            healthCanvas
+        ) {
 
-        const existingHealthChart =
-            Chart.getChart(healthCanvas);
+            const existingHealthChart =
+                Chart.getChart(healthCanvas);
 
-        if (existingFaultChart) {
-            existingFaultChart.destroy();
-        }
-
-        if (existingHealthChart) {
-            existingHealthChart.destroy();
-        }
-
-
-        // -----------------------------
-        // Fault Chart
-        // -----------------------------
-
-        new Chart(
-            document.getElementById("faultChart"),
-            {
-                type: "doughnut",
-
-                data: {
-                    labels: [
-                        "NORMAL",
-                        "FAULT"
-                    ],
-
-                    datasets: [{
-                        data: [
-                            data.fault_distribution.NORMAL || 0,
-                            data.fault_distribution.FAULT || 0
-                        ]
-                    }]
-                },
-
-             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-
-                plugins: {
-                    legend: {
-                        position: "top"
-                    }
-                }
+            if (existingHealthChart) {
+                existingHealthChart.destroy();
             }
+
         }
+
+
+        // =====================================================
+        // DATA
+        // =====================================================
+
+        const normal =
+            data.fault_distribution.NORMAL || 0;
+
+        const fault =
+            data.fault_distribution.FAULT || 0;
+
+
+        const totalFaultRecords =
+            normal + fault;
+
+
+        const faultRate =
+            totalFaultRecords > 0
+                ? fault / totalFaultRecords
+                : 0;
+
+
+        const faultPercentage =
+            (faultRate * 100).toFixed(1);
+
+
+        const normalPercentage =
+            ((1 - faultRate) * 100).toFixed(1);
+
+
+        // =====================================================
+        // UPDATE FAULT GAUGE
+        // =====================================================
+
+        const gaugeLength = 346;
+
+
+        const normalLength =
+            gaugeLength * (1 - faultRate);
+
+
+        const faultLength =
+            gaugeLength * faultRate;
+
+
+        const normalGauge =
+            document.getElementById("normalGauge");
+
+
+        const faultGauge =
+            document.getElementById("faultGauge");
+
+
+        normalGauge.setAttribute(
+            "stroke-dasharray",
+            `${normalLength} ${gaugeLength}`
+        );
+
+
+        normalGauge.setAttribute(
+            "stroke-dashoffset",
+            "0"
+        );
+
+
+        faultGauge.setAttribute(
+            "stroke-dasharray",
+            `${faultLength} ${gaugeLength}`
+        );
+
+
+        faultGauge.setAttribute(
+            "stroke-dashoffset",
+            `-${normalLength}`
+        );
+
+
+        // =====================================================
+        // UPDATE NEEDLE
+        // =====================================================
+
+        const needleAngle =
+            Math.PI +
+            (Math.PI * (1 - faultRate));
+
+
+        const needleLength = 96;
+
+
+        const needleX =
+            140 +
+            Math.cos(needleAngle) *
+            needleLength;
+
+
+        const needleY =
+            140 +
+            Math.sin(needleAngle) *
+            needleLength;
+
+
+        const needle =
+            document.getElementById("faultNeedle");
+
+
+        needle.setAttribute(
+            "x2",
+            needleX
+        );
+
+
+        needle.setAttribute(
+            "y2",
+            needleY
+        );
+
+
+        // =====================================================
+        // UPDATE TEXT
+        // =====================================================
+
+        document.getElementById(
+            "faultRateValue"
+        ).textContent =
+            `${faultPercentage}%`;
+
+
+        document.getElementById(
+            "normalStatusValue"
+        ).textContent =
+            `NORMAL STATUS: ${normalPercentage}%`;
+
+
+        document.getElementById(
+            "normalLegend"
+        ).textContent =
+            `NORMAL (${normalPercentage}%)`;
+
+
+        document.getElementById(
+            "faultLegend"
+        ).textContent =
+            `FAULT (${faultPercentage}%)`;
+
+
+        // =====================================================
+        // FAULT GAUGE TOOLTIP
+        // =====================================================
+
+        const faultTooltip =
+            document.getElementById(
+                "faultGaugeTooltip"
+            );
+
+
+        const faultTooltipTitle =
+            document.getElementById(
+                "faultTooltipTitle"
+            );
+
+
+        const faultTooltipRecords =
+            document.getElementById(
+                "faultTooltipRecords"
+            );
+
+
+        const faultTooltipPercentage =
+            document.getElementById(
+                "faultTooltipPercentage"
+            );
+
+
+        function showFaultTooltip(
+            type,
+            records,
+            percentage,
+            event
+        ) {
+
+            faultTooltipTitle.textContent =
+                type;
+
+
+            faultTooltipRecords.textContent =
+                `${records.toLocaleString()} records`;
+
+
+            faultTooltipPercentage.textContent =
+                `${percentage}%`;
+
+
+            const card =
+                faultTooltip.closest(
+                    ".chart-card"
                 );
 
 
-        // -----------------------------
-        // Battery Health Chart
-        // -----------------------------
+            const cardRect =
+                card.getBoundingClientRect();
 
-        new Chart(
-            document.getElementById("healthChart"),
-            {
-                type: "bar",
 
-                data: {
-                    labels: Object.keys(
-                        data.battery_health_distribution
-                    ),
+            const tooltipX =
+                event.clientX -
+                cardRect.left +
+                12;
 
-                    datasets: [{
-                        label: "Vehicles",
 
-                        data: Object.values(
-                            data.battery_health_distribution
-                        )
-                    }]
-                },
+            const tooltipY =
+                event.clientY -
+                cardRect.top +
+                12;
 
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
 
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    },
+            faultTooltip.style.left =
+                `${tooltipX}px`;
 
-                    plugins: {
-                        legend: {
-                            position: "top"
-                        }
-                    }
-                }
+
+            faultTooltip.style.top =
+                `${tooltipY}px`;
+
+
+            faultTooltip.classList.add(
+                "visible"
+            );
+
+        }
+
+
+        function hideFaultTooltip() {
+
+            faultTooltip.classList.remove(
+                "visible"
+            );
+
+        }
+
+
+        normalGauge.addEventListener(
+            "mousemove",
+            (event) => {
+
+                showFaultTooltip(
+                    "NORMAL",
+                    normalRecords,
+                    normalPercentage,
+                    event
+                );
+
             }
         );
 
 
-        // -----------------------------
-        // Temperature
-        // -----------------------------
+        normalGauge.addEventListener(
+            "mouseleave",
+            hideFaultTooltip
+        );
+
+
+        faultGauge.addEventListener(
+            "mousemove",
+            (event) => {
+
+                showFaultTooltip(
+                    "FAULT",
+                    faultRecords,
+                    faultPercentage,
+                    event
+                );
+
+            }
+        );
+
+
+        faultGauge.addEventListener(
+            "mouseleave",
+            hideFaultTooltip
+        );
+
+
+        // =====================================================
+        // BATTERY HEALTH VALUE PLUGIN
+        // =====================================================
+
+        const healthValuePlugin = {
+
+            id: "healthValuePlugin",
+
+            afterDatasetsDraw(chart) {
+
+                const {
+                    ctx
+                } = chart;
+
+
+                const meta =
+                    chart.getDatasetMeta(0);
+
+
+                ctx.save();
+
+
+                ctx.fillStyle =
+                    chartTheme.label;
+
+
+                ctx.font =
+                    "600 11px 'JetBrains Mono', monospace";
+
+
+                ctx.textAlign =
+                    "left";
+
+
+                ctx.textBaseline =
+                    "middle";
+
+
+                meta.data.forEach(
+                    (bar, index) => {
+
+                        const value =
+                            chart.data.datasets[0]
+                                .data[index];
+
+
+                        ctx.fillText(
+                            value,
+                            bar.x + 10,
+                            bar.y
+                        );
+
+                    }
+                );
+
+
+                ctx.restore();
+
+            }
+
+        };
+
+
+        // =====================================================
+        // BATTERY HEALTH CHART
+        // =====================================================
+
+        const healthLabels =
+            Object.keys(
+                data.battery_health_distribution
+            );
+
+
+        const healthValues =
+            Object.values(
+                data.battery_health_distribution
+            );
+
+
+        new Chart(
+            healthCanvas,
+            {
+
+                type: "bar",
+
+
+                data: {
+
+                    labels: healthLabels,
+
+
+                    datasets: [{
+
+                        label: "Vehicles",
+
+                        data: healthValues,
+
+
+                        backgroundColor:
+                            function(context) {
+
+                                const chart =
+                                    context.chart;
+
+
+                                const {
+                                    ctx,
+                                    chartArea
+                                } = chart;
+
+
+                                if (!chartArea) {
+                                    return "#38a3f8";
+                                }
+
+
+                                const gradient =
+                                    ctx.createLinearGradient(
+                                        chartArea.left,
+                                        0,
+                                        chartArea.right,
+                                        0
+                                    );
+
+
+                                gradient.addColorStop(
+                                    0,
+                                    "#1e5f8a"
+                                );
+
+
+                                gradient.addColorStop(
+                                    1,
+                                    "#38a3f8"
+                                );
+
+
+                                return gradient;
+
+                            },
+
+
+                        borderWidth: 0,
+
+                        borderRadius: 4,
+
+                        barThickness: 22,
+
+                        maxBarThickness: 22
+
+                    }]
+
+                },
+
+
+                plugins: [
+                    healthValuePlugin
+                ],
+
+
+                options: {
+
+                    indexAxis: "y",
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+
+                    layout: {
+
+                        padding: {
+                            right: 35,
+                            left: 5
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            beginAtZero: true,
+
+                            max: 60,
+
+                            grid: {
+
+                                color:
+                                    chartTheme.grid,
+
+                                borderDash: [
+                                    3,
+                                    3
+                                ],
+
+                                drawBorder: false
+                            },
+
+                            ticks: {
+
+                                stepSize: 20,
+
+                                color:
+                                    chartTheme.text,
+
+                                font: {
+
+                                    family:
+                                        "'JetBrains Mono', monospace",
+
+                                    size: 10
+                                }
+                            },
+
+                            border: {
+                                display: false
+                            }
+                        },
+
+
+                        y: {
+
+                            grid: {
+                                display: false
+                            },
+
+                            ticks: {
+
+                                color:
+                                    chartTheme.label,
+
+                                font: {
+
+                                    family:
+                                        "'JetBrains Mono', monospace",
+
+                                    size: 11
+                                },
+
+                                padding: 8
+                            },
+
+                            border: {
+                                display: false
+                            }
+                        }
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                chartTheme.tooltipBackground,
+
+                            borderColor:
+                                chartTheme.tooltipBorder,
+
+                            borderWidth: 1,
+
+                            titleColor:
+                                chartTheme.label,
+
+                            bodyColor:
+                                chartTheme.tooltipText,
+
+                            padding: 12
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        // =====================================================
+        // TEMPERATURE
+        // =====================================================
 
         document.getElementById(
             "avgBatteryTemp"
         ).textContent =
             `${data.temperature.average_battery_temperature} °C`;
 
+
         document.getElementById(
             "maxBatteryTemp"
         ).textContent =
             `${data.temperature.maximum_battery_temperature} °C`;
 
+
         document.getElementById(
             "avgMotorTemp"
         ).textContent =
             `${data.temperature.average_motor_temperature} °C`;
+
 
         document.getElementById(
             "maxMotorTemp"
@@ -1089,17 +1648,14 @@ async function loadFleetAnalytics() {
         );
 
     }
-}
 
-// -----------------------------
-// Load Vehicle History
-// -----------------------------
+}
 
 async function loadVehicleHistory(vehicleId) {
 
     try {
 
-        const response = await fetch(
+        const response = await authenticatedFetch(
             `${API_URL}/vehicles/${vehicleId}/history`
         );
 
@@ -1321,10 +1877,9 @@ async function checkAnomalies() {
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/vehicles/${vehicleId}/anomalies`
-            );
+        const response = await authenticatedFetch(
+            `${API_URL}/vehicles/${vehicleId}/anomalies`
+        );
 
 
         if (!response.ok) {
@@ -1577,11 +2132,9 @@ async function calculateMaintenanceRisk() {
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/vehicles/${vehicleId}/maintenance`
-            );
-
+        const response = await authenticatedFetch(
+            `${API_URL}/vehicles/${vehicleId}/maintenance`
+        );
 
         if (!response.ok) {
 
@@ -2181,7 +2734,7 @@ function setupGlobalSearch() {
             try {
 
                 const response =
-                    await fetch(
+                    await authenticatedFetch(
                         `${API_URL}/vehicles`
                     );
 
@@ -2257,6 +2810,27 @@ function loadSelectedVehiclePage() {
 
     loadVehicleDetails(vehicleId);
 }
+
+// -----------------------------
+// Active Navigation Link
+// -----------------------------
+
+const currentPage =
+    window.location.pathname.split("/").pop() || "index.html";
+
+document
+    .querySelectorAll(".nav-link")
+    .forEach(link => {
+
+        const linkPage =
+            link.getAttribute("href");
+
+        if (linkPage === currentPage) {
+            link.classList.add("active");
+        }
+
+    });
+
 // -----------------------------
 // Page Initialization
 // -----------------------------
@@ -2282,9 +2856,8 @@ if (
     loadFleetRisk();
 }
 
-
 if (
-    document.getElementById("faultChart") &&
+    document.getElementById("faultGauge") &&
     document.getElementById("healthChart")
 ) {
     loadFleetAnalytics();
@@ -2527,11 +3100,18 @@ function requireAuthentication() {
     const token =
         localStorage.getItem("access_token");
 
-    if (!token) {
+    const isLoginPage =
+        window.location.pathname.endsWith(
+            "login.html"
+        );
+
+    if (!token && !isLoginPage) {
         window.location.href =
             "login.html";
     }
 }
+
+requireAuthentication();
 
 async function authenticatedFetch(
     url,
@@ -2541,7 +3121,7 @@ async function authenticatedFetch(
         localStorage.getItem("access_token");
 
     if (!token) {
-        window.location.href = "login.html";
+        window.location.replace("login.html");
         return null;
     }
 
@@ -2563,15 +3143,46 @@ async function authenticatedFetch(
     );
 
     if (response.status === 401) {
+
         localStorage.removeItem(
             "access_token"
         );
 
-        window.location.href =
-            "login.html";
+        window.location.replace("login.html");
 
         return null;
     }
 
     return response;
 }
+
+
+// -----------------------------
+// Protect Browser Back / Forward
+// -----------------------------
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        const token =
+            localStorage.getItem("access_token");
+
+        const isLoginPage =
+            window.location.pathname.endsWith(
+                "login.html"
+            );
+
+        // Already logged in → don't allow login page
+        if (token && isLoginPage) {
+            window.location.replace("index.html");
+            return;
+        }
+
+        // Logged out → don't allow protected pages
+        if (!token && !isLoginPage) {
+            window.location.replace("login.html");
+        }
+
+    }
+);

@@ -1,4 +1,18 @@
+# Virtual environment
 .venv/
+
+# Environment variables / secrets
 .env
+.env.*
+
+# Python cache
 __pycache__/
 *.pyc
+*.pyo
+
+# Local database
+data/*.db
+
+# OS files
+.DS_Store
+Thumbs.db

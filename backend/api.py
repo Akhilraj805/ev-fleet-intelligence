@@ -59,6 +59,40 @@ fleet_risk_cache_time = 0
 FLEET_RISK_CACHE_TTL = 30
 
 
+#Fleet Data Cache
+
+
+fleet_data_cache = None
+fleet_data_cache_time = 0
+FLEET_DATA_CACHE_TTL = 30
+
+def get_processed_fleet_data():
+
+    global fleet_data_cache
+    global fleet_data_cache_time
+
+    current_time = time.time()
+
+    if (
+        fleet_data_cache is not None
+        and current_time - fleet_data_cache_time
+        < FLEET_DATA_CACHE_TTL
+    ):
+        return fleet_data_cache
+
+    df = get_all_telemetry()
+
+    if df.empty:
+        return df
+
+    df = calculate_battery_health(df)
+
+    fleet_data_cache = df
+    fleet_data_cache_time = current_time
+
+    return fleet_data_cache
+
+
 # -----------------------------
 # EV Input Model
 # -----------------------------
@@ -126,7 +160,10 @@ def login(
 # -----------------------------
 
 @app.post("/predict")
-def predict(data: EVData):
+def predict(
+    data: EVData,
+    current_user: str = Depends(get_current_user)
+):
 
     # -----------------------------
     # Fault prediction
@@ -277,7 +314,10 @@ def get_vehicles(
 # -----------------------------
 
 @app.get("/vehicles/{vehicle_id}")
-def get_vehicle(vehicle_id: str):
+def get_vehicle(
+    vehicle_id: str,
+    current_user: str = Depends(get_current_user)
+):
 
     df = get_vehicle_telemetry(vehicle_id)
 
@@ -314,18 +354,15 @@ def get_vehicle(vehicle_id: str):
 
 @app.get("/fleet/summary")
 def fleet_summary(
-    current_user: str = Depends(get_current_user) 
+    current_user: str = Depends(get_current_user)
     ):
 
-    df = get_all_telemetry()
+    df = get_processed_fleet_data()
 
     if df.empty:
         return {
             "error": "No telemetry data available"
         }
-
-    # Calculate battery health
-    df = calculate_battery_health(df)
 
     return {
         "total_vehicles": int(df["vehicle_id"].nunique()),
@@ -455,7 +492,9 @@ def calculate_fleet_recent_anomalies(df):
     return recent_counts.to_dict()
 
 @app.get("/fleet/risk")
-def fleet_risk():
+def fleet_risk(
+    current_user: str = Depends(get_current_user)
+):
 
     global fleet_risk_cache
     global fleet_risk_cache_time
@@ -639,7 +678,9 @@ def fleet_risk():
     return fleet_risk_cache
 
 @app.get("/fleet/analytics")
-def fleet_analytics():
+def fleet_analytics(
+    current_user: str = Depends(get_current_user)
+):
 
     df = get_all_telemetry()
 
@@ -794,8 +835,12 @@ def fleet_analytics():
 
         "performance": performance
     }
+
 @app.get("/vehicles/{vehicle_id}/history")
-def vehicle_history(vehicle_id: str):
+def vehicle_history(
+    vehicle_id: str,
+    current_user: str = Depends(get_current_user)
+):
 
     df = get_vehicle_telemetry(vehicle_id)
 
@@ -935,7 +980,10 @@ def calculate_anomalies(df):
     }
 
 @app.get("/vehicles/{vehicle_id}/anomalies")
-def detect_anomalies(vehicle_id: str):
+def detect_anomalies(
+    vehicle_id: str,
+    current_user: str = Depends(get_current_user)
+):
 
     df = get_vehicle_telemetry(vehicle_id)
 
@@ -985,7 +1033,10 @@ def detect_anomalies(vehicle_id: str):
     }
 
 @app.get("/vehicles/{vehicle_id}/maintenance")
-def predictive_maintenance(vehicle_id: str):
+def predictive_maintenance(
+    vehicle_id: str,
+    current_user: str = Depends(get_current_user)
+):
 
     df = get_vehicle_telemetry(vehicle_id)
 

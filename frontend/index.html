@@ -400,56 +400,258 @@
 
 
 
-            <div class="charts">
+        <div class="charts analytics-page-charts">
 
+            <!-- FAULT DISTRIBUTION -->
 
-                <div class="chart-card">
+            <div class="chart-card analytics-reference-card">
 
-                    <div class="chart-header">
+                <div class="chart-header">
 
-                        <div>
+                    <div>
 
-                            <h3>
-                                Fault Distribution
-                            </h3>
+                        <h3>
+                            Fault Distribution
+                        </h3>
 
-                            <span>
-                                Normal vs fault telemetry
-                            </span>
-
-                        </div>
+                        <span>
+                            Normal versus fault telemetry records
+                        </span>
 
                     </div>
-
-                    <canvas id="faultChart"></canvas>
 
                 </div>
 
 
+                <div class="reference-legend">
 
-                <div class="chart-card">
+                    <div class="reference-legend-item">
 
-                    <div class="chart-header">
+                        <span
+                            class="legend-bar legend-blue">
+                        </span>
 
-                        <div>
+                        <span id="normalLegend">
+                            NORMAL
+                        </span>
 
-                            <h3>
-                                Battery Health Distribution
-                            </h3>
+                    </div>
 
-                            <span>
-                                Estimated fleet battery condition
-                            </span>
+
+                    <div class="reference-legend-item">
+
+                        <span
+                            class="legend-bar legend-coral">
+                        </span>
+
+                        <span id="faultLegend">
+                            FAULT
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fault-gauge-container">
+
+                    <svg
+                        class="fault-gauge"
+                        viewBox="0 0 280 155">
+
+                        <path
+                            d="M 30 140 A 110 110 0 0 1 250 140"
+                            fill="none"
+                            stroke="#131c2e"
+                            stroke-linecap="round"
+                            stroke-width="26">
+                        </path>
+
+
+                        <path
+                            id="normalGauge"
+                            fill="none"
+                            stroke="#38a3f8"
+                            stroke-linecap="butt"
+                            stroke-width="24"
+                            d="M 30 140 A 110 110 0 0 1 250 140">
+                        </path>
+
+
+                        <path
+                            id="faultGauge"
+                            fill="none"
+                            stroke="#fb7185"
+                            stroke-linecap="butt"
+                            stroke-width="24"
+                            d="M 30 140 A 110 110 0 0 1 250 140">
+                        </path>
+
+
+                        <path
+                            d="M 18 140 A 122 122 0 0 1 262 140"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.08)"
+                            stroke-width="1">
+                        </path>
+
+
+                        <path
+                            d="M 42 140 A 98 98 0 0 1 238 140"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.08)"
+                            stroke-width="1">
+                        </path>
+
+
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="7"
+                            fill="#1e293b">
+                        </circle>
+
+
+                        <line
+                            id="faultNeedle"
+                            stroke="#fb7185"
+                            stroke-linecap="round"
+                            stroke-width="2.5"
+                            x1="140"
+                            y1="140"
+                            x2="208"
+                            y2="64">
+                        </line>
+
+
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="3.5"
+                            fill="#38a3f8">
+                        </circle>
+
+                    </svg>
+
+
+                    <div class="fault-gauge-value">
+
+                        <strong id="faultRateValue">
+                            --%
+                        </strong>
+
+                        <span>
+                            FLEET FAULT RATE
+                        </span>
+
+
+                        <div class="normal-status">
+
+                            <span></span>
+
+                            <label id="normalStatusValue">
+                                NORMAL STATUS: --%
+                            </label>
 
                         </div>
 
                     </div>
+
+                </div>
+
+
+                <!-- FAULT GAUGE TOOLTIP -->
+
+                <div
+                    id="faultGaugeTooltip"
+                    class="fault-gauge-tooltip">
+
+                    <strong id="faultTooltipTitle">
+                        NORMAL
+                    </strong>
+
+                    <span id="faultTooltipRecords">
+                        0 records
+                    </span>
+
+                    <span id="faultTooltipPercentage">
+                        0.0%
+                    </span>
+
+                </div>
+
+
+                <div class="chart-footer">
+
+                    <span>
+                        SAMPLE PERIOD: 24H
+                    </span>
+
+                    <span>
+                        INTEGRITY CHECK: PASSED
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BATTERY HEALTH DISTRIBUTION -->
+
+            <div class="chart-card analytics-reference-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <h3>
+                            Battery Health Distribution
+                        </h3>
+
+                        <span>
+                            Distribution of estimated battery condition
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="reference-single-legend">
+
+                    <span
+                        class="legend-bar legend-steel">
+                    </span>
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                </div>
+
+
+                <div class="health-chart-container">
 
                     <canvas id="healthChart"></canvas>
 
                 </div>
 
+
+                <div class="chart-footer">
+
+                    <span>
+                        ACTIVE VEHICLES: 100
+                    </span>
+
+                    <span>
+                        EST. DEGRADATION: 4.2% / YR
+                    </span>
+
+                </div>
+
             </div>
+
+        </div>
 
 
 

@@ -15,9 +15,84 @@
         rel="stylesheet"
         href="style.css">
 
+    <style>
+
+        /* =====================================================
+           FAULT GAUGE TOOLTIP
+           ===================================================== */
+
+        .fault-gauge-container {
+            position: relative;
+        }
+
+        .fault-gauge-tooltip {
+            position: absolute;
+
+            display: none;
+            flex-direction: column;
+
+            gap: 4px;
+
+            min-width: 150px;
+
+            padding: 12px 14px;
+
+            background: #0b101b;
+
+            border: 1px solid #1e293b;
+
+            border-radius: 8px;
+
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.35);
+
+            z-index: 20;
+
+            pointer-events: none;
+        }
+
+        .fault-gauge-tooltip.visible {
+            display: flex;
+        }
+
+        .fault-gauge-tooltip strong {
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 600;
+        }
+
+        .fault-gauge-tooltip span {
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            font-family:
+                "JetBrains Mono",
+                monospace;
+        }
+
+        .fault-gauge-tooltip span:last-child {
+
+            color: #cbd5e1;
+
+            font-weight: 600;
+        }
+
+    </style>
+
 </head>
 
+
 <body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
 
     <header class="topbar">
 
@@ -72,10 +147,11 @@
                 href="attention.html"
                 class="nav-link">
                 Attention
-            </a>    
+            </a>
 
         </nav>
-        
+
+
         <div class="global-search">
 
             <input
@@ -86,6 +162,7 @@
 
         </div>
 
+
         <div class="system-status">
 
             <span class="status-dot"></span>
@@ -95,27 +172,43 @@
             </span>
 
         </div>
-            <button
-                class="theme-toggle"
-                id="themeToggle"
-                type="button"
-                aria-label="Toggle theme"
-                title="Toggle theme"
-            >
-                <span id="themeIcon">☾</span>
-            </button>
 
-            <button
-                id="logoutButton"
-                class="logout-button"
-                type="button">
-                Logout
-            </button>
+
+        <button
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+            aria-label="Toggle theme"
+            title="Toggle theme">
+
+            <span id="themeIcon">☾</span>
+
+        </button>
+
+
+        <button
+            id="logoutButton"
+            class="logout-button"
+            type="button">
+
+            Logout
+
+        </button>
 
     </header>
 
 
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
     <main class="dashboard-container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
 
         <section class="dashboard-header">
 
@@ -136,6 +229,7 @@
 
             </div>
 
+
             <div class="dashboard-meta">
 
                 <span>
@@ -151,9 +245,20 @@
         </section>
 
 
+
+        <!-- =================================================
+             ANALYTICS CHARTS
+             ================================================= -->
+
         <section class="charts analytics-page-charts">
 
-            <div class="chart-card">
+
+            <!-- =================================================
+                 FAULT DISTRIBUTION
+                 ================================================= -->
+
+            <div class="chart-card analytics-reference-card">
+
 
                 <div class="chart-header">
 
@@ -171,12 +276,237 @@
 
                 </div>
 
-                <canvas id="faultChart"></canvas>
+
+                <!-- LEGEND -->
+
+                <div class="reference-legend">
+
+
+                    <div class="reference-legend-item">
+
+                        <span
+                            class="legend-bar legend-blue">
+                        </span>
+
+                        <span id="normalLegend">
+                            NORMAL
+                        </span>
+
+                    </div>
+
+
+                    <div class="reference-legend-item">
+
+                        <span
+                            class="legend-bar legend-coral">
+                        </span>
+
+                        <span id="faultLegend">
+                            FAULT
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FAULT GAUGE
+                     ================================================= -->
+
+                <div class="fault-gauge-container">
+
+
+                    <svg
+                        class="fault-gauge"
+                        viewBox="0 0 280 155"
+                        aria-label="Fleet fault distribution gauge">
+
+
+                        <!-- Background -->
+
+                        <path
+                            d="M 30 140 A 110 110 0 0 1 250 140"
+                            fill="none"
+                            stroke="#131c2e"
+                            stroke-linecap="round"
+                            stroke-width="26">
+                        </path>
+
+
+                        <!-- NORMAL -->
+
+                        <path
+                            id="normalGauge"
+                            fill="none"
+                            stroke="#38a3f8"
+                            stroke-linecap="butt"
+                            stroke-width="24"
+                            d="M 30 140 A 110 110 0 0 1 250 140">
+                        </path>
+
+
+                        <!-- FAULT -->
+
+                        <path
+                            id="faultGauge"
+                            fill="none"
+                            stroke="#fb7185"
+                            stroke-linecap="butt"
+                            stroke-width="24"
+                            d="M 30 140 A 110 110 0 0 1 250 140">
+                        </path>
+
+
+                        <!-- Outer guide -->
+
+                        <path
+                            d="M 18 140 A 122 122 0 0 1 262 140"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.08)"
+                            stroke-width="1">
+                        </path>
+
+
+                        <!-- Inner guide -->
+
+                        <path
+                            d="M 42 140 A 98 98 0 0 1 238 140"
+                            fill="none"
+                            stroke="rgba(255,255,255,0.08)"
+                            stroke-width="1">
+                        </path>
+
+
+                        <!-- Needle center -->
+
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="7"
+                            fill="#1e293b">
+                        </circle>
+
+
+                        <!-- Needle -->
+
+                        <line
+                            id="faultNeedle"
+                            stroke="#fb7185"
+                            stroke-linecap="round"
+                            stroke-width="2.5"
+                            x1="140"
+                            y1="140"
+                            x2="208"
+                            y2="64">
+                        </line>
+
+
+                        <!-- Center point -->
+
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="3.5"
+                            fill="#38a3f8">
+                        </circle>
+
+
+                    </svg>
+
+
+
+                    <!-- =================================================
+                         GAUGE VALUE
+                         ================================================= -->
+
+                    <div class="fault-gauge-value">
+
+
+                        <strong id="faultRateValue">
+                            --%
+                        </strong>
+
+
+                        <span>
+                            FLEET FAULT RATE
+                        </span>
+
+
+                        <div class="normal-status">
+
+                            <span></span>
+
+                            <label id="normalStatusValue">
+                                NORMAL STATUS: --%
+                            </label>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TOOLTIP
+                     ================================================= -->
+
+                <div
+                    id="faultGaugeTooltip"
+                    class="fault-gauge-tooltip">
+
+
+                    <strong id="faultTooltipTitle">
+                        NORMAL
+                    </strong>
+
+
+                    <span id="faultTooltipRecords">
+                        0 records
+                    </span>
+
+
+                    <span id="faultTooltipPercentage">
+                        0.0%
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FOOTER
+                     ================================================= -->
+
+                <div class="chart-footer">
+
+                    <span>
+                        SAMPLE PERIOD: 24H
+                    </span>
+
+                    <span>
+                        INTEGRITY CHECK: PASSED
+                    </span>
+
+                </div>
+
 
             </div>
 
 
-            <div class="chart-card">
+
+            <!-- =================================================
+                 BATTERY HEALTH DISTRIBUTION
+                 ================================================= -->
+
+            <div class="chart-card analytics-reference-card">
+
 
                 <div class="chart-header">
 
@@ -194,14 +524,53 @@
 
                 </div>
 
-                <canvas id="healthChart"></canvas>
+
+                <div class="reference-single-legend">
+
+                    <span
+                        class="legend-bar legend-steel">
+                    </span>
+
+                    <span>
+                        Vehicles
+                    </span>
+
+                </div>
+
+
+                <div class="health-chart-container">
+
+                    <canvas id="healthChart"></canvas>
+
+                </div>
+
+
+                <div class="chart-footer">
+
+                    <span>
+                        ACTIVE VEHICLES: 100
+                    </span>
+
+                    <span>
+                        EST. DEGRADATION: 4.2% / YR
+                    </span>
+
+                </div>
+
 
             </div>
+
 
         </section>
 
 
+
+        <!-- =====================================================
+             TEMPERATURE OVERVIEW
+             ===================================================== -->
+
         <section class="temperature-card analytics-temperature">
+
 
             <div class="temperature-header">
 
@@ -221,6 +590,7 @@
 
 
             <div class="temperature-stats">
+
 
                 <div>
 
@@ -273,12 +643,20 @@
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
+
+        <!-- =====================================================
+             ANALYTICS INSIGHTS
+             ===================================================== -->
+
         <section class="analytics-insights">
+
 
             <div class="section-heading">
 
@@ -298,6 +676,7 @@
 
 
             <div class="analytics-info-grid">
+
 
                 <div class="detail-card">
 
@@ -350,20 +729,29 @@
 
                 </div>
 
+
             </div>
 
+
         </section>
+
 
     </main>
 
 
+
+    <!-- =====================================================
+         SCRIPTS
+         ===================================================== -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-   <script src="script.js"></script>
+    <script src="script.js"></script>
 
     <script>
         requireAuthentication();
     </script>
+
 
 </body>
 
