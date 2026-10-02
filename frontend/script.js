@@ -3163,3 +3163,64 @@ window.addEventListener(
 
     }
 );
+
+/* =========================================================
+   MOBILE NAVIGATION
+   ========================================================= */
+
+const mobileMenuToggle =
+    document.getElementById("mobileMenuToggle");
+
+const mainNav =
+    document.querySelector(".main-nav");
+
+if (mobileMenuToggle && mainNav) {
+
+    mobileMenuToggle.addEventListener(
+        "click",
+        () => {
+
+            mainNav.classList.toggle(
+                "mobile-open"
+            );
+
+            const isOpen =
+                mainNav.classList.contains(
+                    "mobile-open"
+                );
+
+            mobileMenuToggle.textContent =
+                isOpen ? "✕" : "☰";
+
+            mobileMenuToggle.setAttribute(
+                "aria-label",
+                isOpen
+                    ? "Close navigation"
+                    : "Open navigation"
+            );
+        }
+    );
+
+    mainNav
+        .querySelectorAll(".nav-link")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    mainNav.classList.remove(
+                        "mobile-open"
+                    );
+
+                    mobileMenuToggle.textContent =
+                        "☰";
+
+                    mobileMenuToggle.setAttribute(
+                        "aria-label",
+                        "Open navigation"
+                    );
+                }
+            );
+        });
+}
