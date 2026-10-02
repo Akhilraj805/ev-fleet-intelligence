@@ -3849,3 +3849,204 @@ html[data-theme="light"] .topbar {
     background: rgba(255, 255, 255, 0.96);
     box-shadow: 0 1px 0 rgba(30, 45, 60, 0.08);
 }
+/* =========================================================
+   FINAL TOPBAR LAYOUT FIX
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .topbar {
+        height: auto;
+        min-height: 72px;
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(220px, auto)
+            minmax(180px, 1fr)
+            auto
+            auto
+            auto;
+
+        grid-template-rows: 72px 44px;
+
+        align-items: center;
+        gap: 0 16px;
+
+        padding: 0 24px;
+    }
+
+    /* Brand */
+    .topbar .brand {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+    }
+
+    /* Search */
+    .topbar .global-search {
+        grid-column: 2;
+        grid-row: 1;
+
+        width: 100%;
+        margin: 0;
+    }
+
+    .topbar .global-search input {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* System status */
+    .topbar .system-status {
+        grid-column: 3;
+        grid-row: 1;
+
+        margin: 0;
+    }
+
+    /* Theme */
+    .topbar .theme-toggle {
+        grid-column: 4;
+        grid-row: 1;
+
+        margin-left: 0;
+    }
+
+    /* Logout */
+    .topbar .logout-button {
+        grid-column: 5;
+        grid-row: 1;
+
+        width: auto;
+        min-width: 72px;
+        height: 36px;
+
+        margin: 0;
+        padding: 0 14px;
+    }
+
+    /* Navigation */
+    .topbar .main-nav {
+        grid-column: 1 / -1;
+        grid-row: 2;
+
+        width: 100%;
+        height: 44px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+    }
+
+    .topbar .main-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .topbar .nav-link {
+        height: 44px;
+
+        flex: 0 0 auto;
+
+        padding: 0 14px;
+
+        font-size: 13px;
+    }
+}
+
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+.logout-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 36px;
+
+    padding: 0 14px;
+
+    background: var(--surface-2);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.logout-button:hover {
+    background: var(--danger-soft);
+    border-color: rgba(255, 82, 82, 0.4);
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   NARROW SCREENS
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .topbar {
+        grid-template-columns:
+            minmax(0, 1fr)
+            auto
+            auto;
+
+        grid-template-rows: 64px 44px 44px;
+
+        padding: 0 16px;
+    }
+
+    .topbar .brand {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .topbar .global-search {
+        grid-column: 1 / -1;
+        grid-row: 2;
+    }
+
+    .topbar .system-status {
+        display: none;
+    }
+
+    .topbar .theme-toggle {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .topbar .logout-button {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .topbar .main-nav {
+        grid-column: 1 / -1;
+        grid-row: 3;
+    }
+}

@@ -71,6 +71,10 @@ fleet_data_cache = None
 fleet_data_cache_time = 0
 FLEET_DATA_CACHE_TTL = 30
 
+fleet_analytics_cache = None
+fleet_analytics_cache_time = 0
+FLEET_ANALYTICS_CACHE_TTL = 30
+
 def get_processed_fleet_data():
 
     global fleet_data_cache
@@ -680,6 +684,18 @@ def fleet_analytics(
     current_user: str = Depends(get_current_user)
 ):
 
+    global fleet_analytics_cache
+    global fleet_analytics_cache_time
+
+    current_time = time.time()
+
+    if (
+        fleet_analytics_cache is not None
+        and current_time - fleet_analytics_cache_time
+        < FLEET_ANALYTICS_CACHE_TTL
+    ):
+        return fleet_analytics_cache
+
     df = get_processed_fleet_data()
 
     if df.empty:
@@ -815,8 +831,7 @@ def fleet_analytics(
         )
     }
 
-    return {
-
+    fleet_analytics_cache = {
         "total_vehicles": int(
             latest["vehicle_id"].nunique()
         ),
@@ -832,6 +847,10 @@ def fleet_analytics(
 
         "performance": performance
     }
+
+    fleet_analytics_cache_time = time.time()
+
+    return fleet_analytics_cache
 
 @app.get("/vehicles/{vehicle_id}/history")
 def vehicle_history(
@@ -1155,3 +1174,14 @@ def predictive_maintenance(
                 "reasons"
             ]
     }
+
+@app.on_event("startup")
+def warm_fleet_cache():
+
+    print("Warming fleet intelligence cache...")
+
+    get_processed_fleet_data()
+    fleet_risk(current_user="startup")
+    fleet_analytics(current_user="startup")
+
+    print("Fleet intelligence cache ready.")
