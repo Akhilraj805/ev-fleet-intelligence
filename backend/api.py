@@ -23,6 +23,7 @@ from backend.auth import (
 from dotenv import load_dotenv
 import os
 
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -520,19 +521,12 @@ def fleet_risk(
     # Database Loading
     # -----------------------------
 
-    df = get_all_telemetry()
-
+    df = get_processed_fleet_data()
 
     if df.empty:
         return {
             "error": "No telemetry data available"
         }
-
-    # -----------------------------
-    # Battery Health
-    # -----------------------------
-
-    df = calculate_battery_health(df)
 
     fleet_recent_anomalies = calculate_fleet_recent_anomalies(df)
 
@@ -686,13 +680,12 @@ def fleet_analytics(
     current_user: str = Depends(get_current_user)
 ):
 
-    df = get_all_telemetry()
+    df = get_processed_fleet_data()
 
-        # -----------------------------
-        # Battery health
-        # -----------------------------
-    
-    df = calculate_battery_health(df)
+    if df.empty:
+        return {
+            "error": "No telemetry data available"
+        }
 
     # -----------------------------
     # Latest record for each vehicle

@@ -998,32 +998,6 @@ async function loadFleetAnalytics() {
 
         const data = await response.json();
 
-
-        // =====================================================
-        // GET REAL RECORD COUNTS
-        // =====================================================
-
-        const summaryResponse = await authenticatedFetch(
-            `${API_URL}/fleet/summary`
-        );
-
-        if (!summaryResponse.ok) {
-            throw new Error(
-                `Summary API returned ${summaryResponse.status}`
-            );
-        }
-
-        const summaryData =
-            await summaryResponse.json();
-
-
-        const normalRecords =
-            summaryData.normal_records || 0;
-
-        const faultRecords =
-            summaryData.fault_records || 0;
-
-
         // =====================================================
         // HEALTH CHART
         // =====================================================
@@ -1055,6 +1029,9 @@ async function loadFleetAnalytics() {
 
         const fault =
             data.fault_distribution.FAULT || 0;
+
+        const normalRecords = normal;
+        const faultRecords = fault;
 
 
         const totalFaultRecords =
@@ -3018,7 +2995,7 @@ document
                     );
                 }
 
-                localStorage.setItem(
+                sessionStorage.setItem(
                     "access_token",
                     data.access_token
                 );
@@ -3085,7 +3062,7 @@ document
             "click",
             () => {
 
-                localStorage.removeItem(
+                sessionStorage.removeItem(
                     "access_token"
                 );
 
@@ -3098,7 +3075,7 @@ document
 function requireAuthentication() {
 
     const token =
-        localStorage.getItem("access_token");
+        sessionStorage.getItem("access_token");
 
     const isLoginPage =
         window.location.pathname.endsWith(
@@ -3118,7 +3095,7 @@ async function authenticatedFetch(
     options = {}
 ) {
     const token =
-        localStorage.getItem("access_token");
+        sessionStorage.getItem("access_token");
 
     if (!token) {
         window.location.replace("login.html");
@@ -3144,7 +3121,7 @@ async function authenticatedFetch(
 
     if (response.status === 401) {
 
-        localStorage.removeItem(
+        sessionStorage.removeItem(
             "access_token"
         );
 
@@ -3166,7 +3143,7 @@ window.addEventListener(
     function () {
 
         const token =
-            localStorage.getItem("access_token");
+            sessionStorage.getItem("access_token");
 
         const isLoginPage =
             window.location.pathname.endsWith(

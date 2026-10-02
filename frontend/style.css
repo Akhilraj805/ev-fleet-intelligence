@@ -1688,16 +1688,18 @@ button:active,
     }
 
     .attention-item {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         grid-template-areas:
-            "vehicle risk"
-            "score health"
-            "cycles cycles"
-            "reasons action";
+            "vehicle"
+            "risk"
+            "score"
+            "health"
+            "cycles"
+            "reasons"
+            "action";
         gap: 10px;
         padding: 12px;
     }
-
     .attention-item > .risk-status {
         justify-self: end;
     }
@@ -3158,4 +3160,692 @@ html[data-theme="dark"] .normal-status {
 
 html[data-theme="light"] .topbar {
     box-shadow: 0 2px 10px rgba(20, 35, 50, 0.08);
+}
+
+
+/* =========================================================
+   EV FLEET INTELLIGENCE — CLEAN UI / MOBILE-FIRST OVERRIDES
+   Purpose:
+   - Cleaner, flatter command-center appearance
+   - Better spacing and alignment
+   - Mobile-safe attention cards and buttons
+   - Less bulky cards and excessive glow
+   - Better telemetry chart containers
+   ========================================================= */
+
+/* ---------- Refined design tokens ---------- */
+
+:root {
+    --radius-sm: 7px;
+    --radius: 12px;
+    --radius-lg: 16px;
+
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.18);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.24);
+    --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.32);
+}
+
+/* ---------- Page canvas ---------- */
+
+body {
+    background-image:
+        radial-gradient(
+            ellipse 70% 45% at 50% -10%,
+            rgba(45, 227, 142, 0.045),
+            transparent 62%
+        );
+}
+
+.dashboard-container {
+    width: min(92%, 1380px);
+    padding: 28px 0 56px;
+}
+
+.dashboard-container > section,
+section {
+    margin-bottom: 22px;
+}
+
+/* ---------- Top navigation ---------- */
+
+.topbar {
+    height: 64px;
+    padding: 0 24px;
+    gap: 18px;
+    background: rgba(8, 13, 19, 0.94);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.brand {
+    min-width: 220px;
+    gap: 11px;
+}
+
+.brand-mark {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    box-shadow: none;
+}
+
+.brand-text h1 {
+    font-size: 15px;
+}
+
+.brand-text span {
+    font-size: 8px;
+    letter-spacing: 1.3px;
+}
+
+.main-nav {
+    gap: 2px;
+}
+
+.nav-link {
+    padding: 0 14px;
+    font-size: 12px;
+    border-bottom-width: 2px;
+}
+
+.nav-link.active {
+    text-shadow: none;
+}
+
+.global-search {
+    gap: 12px;
+}
+
+.global-search input {
+    width: 180px;
+    height: 34px;
+    border-radius: 8px;
+}
+
+.global-search input:focus {
+    width: 210px;
+}
+
+/* ---------- Headings ---------- */
+
+.dashboard-header {
+    margin-bottom: 22px;
+}
+
+.dashboard-header h2 {
+    font-size: 26px;
+}
+
+.dashboard-header p {
+    max-width: 600px;
+    font-size: 13px;
+}
+
+.section-heading {
+    margin-bottom: 12px;
+}
+
+.section-heading h2 {
+    font-size: 18px;
+}
+
+/* ---------- Metric cards ---------- */
+
+.stats {
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.card {
+    min-height: 132px;
+    padding: 18px;
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.card::after {
+    display: none;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-value {
+    margin: 8px 0 3px;
+    font-size: 30px;
+}
+
+.metric-description {
+    font-size: 11px;
+}
+
+/* ---------- Shared panels ---------- */
+
+.risk-overview,
+.chart-card,
+.temperature-card,
+.dashboard-vehicle-preview,
+.vehicles-page,
+.attention-page,
+.analytics-insights,
+.maintenance-risk-overview {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.risk-cards {
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.risk-card {
+    min-height: 108px;
+    padding: 17px;
+    border-radius: 10px;
+}
+
+.risk-card strong {
+    margin-top: 10px;
+    font-size: 28px;
+}
+
+/* ---------- Buttons ---------- */
+
+button,
+.view-reasons,
+.view-vehicle,
+.vehicle-action,
+.view-more-button,
+.maintenance-reasons-button,
+.analysis-hide-button {
+    min-height: 36px;
+    padding: 7px 13px;
+    border-radius: 8px;
+    font-size: 11px;
+    box-shadow: none;
+}
+
+button:hover,
+.view-reasons:hover,
+.view-vehicle:hover,
+.vehicle-action:hover,
+.view-more-button:hover,
+.maintenance-reasons-button:hover,
+.analysis-hide-button:hover {
+    box-shadow: none;
+}
+
+/* ---------- Dashboard attention cards ---------- */
+
+.attention {
+    margin-top: 8px;
+}
+
+.attention-item {
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.attention-item > * {
+    min-width: 0;
+}
+
+.attention-item > .view-vehicle,
+.attention-item .view-reasons {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.attention-item .reason-details {
+    box-sizing: border-box;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Telemetry history ---------- */
+
+.telemetry-history {
+    margin-top: 18px;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.history-chart {
+    width: 100%;
+    height: 300px;
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--surface);
+    overflow: hidden;
+}
+
+.history-chart canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ---------- Vehicle lists ---------- */
+
+#vehicleList {
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.vehicle-item,
+.vehicles-page .vehicle {
+    border-radius: 10px;
+}
+
+.vehicle-item {
+    min-height: 64px;
+    padding: 12px 16px;
+}
+
+.vehicles-page #vehicleList {
+    gap: 10px;
+}
+
+/* ---------- Vehicle details ---------- */
+
+.vehicle-details {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.details-grid {
+    gap: 10px;
+}
+
+.detail-card {
+    padding: 14px;
+    border-radius: 9px;
+}
+
+/* ---------- Analysis panels ---------- */
+
+.recommendation,
+.ai-analysis,
+.anomaly-analysis,
+.maintenance-analysis {
+    padding: 18px;
+    border-radius: 10px;
+}
+
+/* ---------- Maintenance ---------- */
+
+.maintenance-vehicle-item {
+    padding: 14px 16px;
+    border-radius: 10px;
+}
+
+/* ---------- Attention page ---------- */
+
+.attention-page-item {
+    min-width: 0;
+    padding: 14px 16px;
+    border-radius: 10px;
+}
+
+.attention-page-item > * {
+    min-width: 0;
+}
+
+.attention-page-item .vehicle-action {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+/* =========================================================
+   MOBILE — CLEAN, STACKED, NO OVERFLOW
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    html,
+    body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .topbar {
+        min-height: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .brand {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+    }
+
+    .brand-text {
+        display: block;
+    }
+
+    .brand-text h1 {
+        font-size: 14px;
+    }
+
+    .brand-text span {
+        font-size: 7px;
+    }
+
+    .global-search {
+        display: none;
+    }
+
+    .system-status {
+        display: none;
+    }
+
+    .main-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 60px;
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .nav-link {
+        height: 44px;
+        padding: 0 13px;
+        font-size: 11px;
+    }
+
+    .dashboard-container {
+        width: calc(100% - 28px);
+        padding: 22px 0 42px;
+    }
+
+    .dashboard-header {
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+
+    .dashboard-header h2 {
+        font-size: 24px;
+    }
+
+    .dashboard-header p {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+    .section-heading h2 {
+        font-size: 17px;
+    }
+
+    .section-action {
+        font-size: 11px;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .card {
+        min-height: 118px;
+        padding: 16px;
+    }
+
+    .metric-value {
+        font-size: 28px;
+    }
+
+    .risk-overview,
+    .chart-card,
+    .temperature-card,
+    .dashboard-vehicle-preview,
+    .vehicles-page,
+    .attention-page,
+    .analytics-insights,
+    .maintenance-risk-overview,
+    .telemetry-history,
+    .vehicle-details {
+        padding: 16px;
+        border-radius: 11px;
+    }
+
+    .risk-card {
+        min-height: 100px;
+        padding: 15px;
+    }
+
+    /* Critical fix: attention cards stay inside their container. */
+
+    .attention-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "vehicle"
+            "risk"
+            "score"
+            "health"
+            "cycles"
+            "reasons"
+            "action";
+        gap: 9px;
+        width: 100%;
+        padding: 14px;
+        overflow: hidden;
+    }
+
+    .attention-item > strong {
+        grid-area: vehicle;
+    }
+
+    .attention-item > .risk-status {
+        grid-area: risk;
+        justify-self: start;
+    }
+
+    .attention-item > span:nth-of-type(1) {
+        grid-area: score;
+    }
+
+    .attention-item > span:nth-of-type(2) {
+        grid-area: health;
+    }
+
+    .attention-item > span:nth-of-type(3) {
+        grid-area: cycles;
+    }
+
+    .attention-item > .reasons-container {
+        grid-area: reasons;
+        width: 100%;
+    }
+
+    .attention-item > .view-vehicle {
+        grid-area: action;
+        width: 100%;
+        justify-self: stretch;
+    }
+
+    .attention-item .view-reasons {
+        width: 100%;
+    }
+
+    .attention-item .reason-details {
+        width: 100%;
+        margin-top: 8px;
+        padding: 11px 12px;
+        font-size: 11px;
+    }
+
+    /* Telemetry cards become shorter and cleaner. */
+
+    .history-chart {
+        height: 240px;
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    .history-chart canvas {
+        min-width: 0 !important;
+    }
+
+    /* Vehicle details */
+
+    .details-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .detail-card {
+        padding: 12px;
+    }
+
+    .detail-card strong {
+        font-size: 16px;
+    }
+
+    /* Maintenance */
+
+    .maintenance-vehicle-item {
+        padding: 13px;
+    }
+
+    .maintenance-actions {
+        width: 100%;
+        margin: 4px 0 0;
+    }
+
+    .maintenance-actions button {
+        flex: 1;
+    }
+
+    /* Attention page */
+
+    .attention-page-item {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        width: 100%;
+        padding: 14px;
+        overflow: hidden;
+    }
+
+    .attention-vehicle-main,
+    .attention-vehicle-metrics,
+    .attention-reasons {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .attention-vehicle-metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 9px 12px;
+    }
+
+    .attention-reasons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .attention-reasons .view-reasons,
+    .attention-page-item .vehicle-action {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .attention-page-item .vehicle-action {
+        justify-self: stretch;
+    }
+
+    /* Analytics charts */
+
+    .analytics-reference-card {
+        min-height: 0;
+        padding: 16px;
+        border-radius: 11px;
+    }
+
+    .fault-chart-container,
+    .health-chart-container {
+        max-width: 100%;
+    }
+
+    .fault-chart-container {
+        height: 245px;
+    }
+
+    .health-chart-container {
+        height: 240px;
+    }
+
+    .reference-legend {
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .chart-footer {
+        gap: 8px;
+    }
+}
+
+/* Very small phones */
+
+@media (max-width: 380px) {
+
+    .dashboard-container {
+        width: calc(100% - 22px);
+    }
+
+    .brand-text span {
+        display: none;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .attention-vehicle-metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .history-chart {
+        height: 225px;
+    }
+}
+
+/* ---------- Light theme: keep the same clean surfaces ---------- */
+
+html[data-theme="light"] .card,
+html[data-theme="light"] .risk-overview,
+html[data-theme="light"] .chart-card,
+html[data-theme="light"] .temperature-card,
+html[data-theme="light"] .dashboard-vehicle-preview,
+html[data-theme="light"] .vehicles-page,
+html[data-theme="light"] .attention-page,
+html[data-theme="light"] .analytics-insights,
+html[data-theme="light"] .maintenance-risk-overview,
+html[data-theme="light"] .telemetry-history,
+html[data-theme="light"] .vehicle-details {
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+
+html[data-theme="light"] .topbar {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 1px 0 rgba(30, 45, 60, 0.08);
 }
