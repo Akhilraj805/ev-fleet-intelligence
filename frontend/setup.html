@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Initial Admin Setup | EV Fleet Intelligence</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="login-page">
+
+        <!-- TOP HEADER -->
+        <header class="login-topbar">
+
+            <div class="login-brand">
+
+                <div class="login-brand-icon">
+                    EV
+                </div>
+
+                <div class="login-brand-text">
+
+                    <strong>
+                        EV Fleet Intelligence
+                    </strong>
+
+                    <span>
+                        Fleet Operations Platform
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="login-header-actions">
+
+                <div class="login-system-status">
+
+                    <span class="status-dot"></span>
+
+                    System Operational
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="login-main">
+
+            <!-- CENTER BRANDING -->
+            <div class="login-brand-heading">
+
+                <div class="login-main-icon">
+                    EV
+                </div>
+
+                <h1>
+                    EV FLEET INTELLIGENCE
+                </h1>
+
+                <p>
+                    FLEET OPERATIONS PLATFORM
+                </p>
+
+            </div>
+
+
+            <!-- SETUP CARD -->
+            <div class="login-card">
+
+                <div class="login-card-header">
+
+                    <h2>
+                        Initial Admin Setup
+                    </h2>
+
+                    <p>
+                        Create the administrator account for this fleet system.
+                    </p>
+
+                </div>
+
+
+                <form id="setupForm">
+
+                    <div class="form-group">
+
+                        <label for="setupUsername">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="setupUsername"
+                            placeholder="Create admin username"
+                            autocomplete="username"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="setupPassword">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="setupPassword"
+                            placeholder="Create password"
+                            autocomplete="new-password"
+                            required>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="setupConfirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="setupConfirmPassword"
+                            placeholder="Confirm password"
+                            autocomplete="new-password"
+                            required>
+
+                    </div>
+
+
+                    <p
+                        id="setupError"
+                        class="login-error">
+                    </p>
+
+
+                    <button
+                        type="submit"
+                        class="login-button">
+
+                        CREATE ADMIN
+
+                        <span>→</span>
+
+                    </button>
+
+                </form>
+
+
+                <div class="login-footer">
+
+                    <span>
+                        ADMINISTRATOR INITIALIZATION
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SYSTEM STATUS -->
+            <div class="login-status-panel">
+
+                <span class="status-dot"></span>
+
+                <strong>
+                    System Status:
+                </strong>
+
+                <span>
+                    Operational
+                </span>
+
+                <span class="status-divider">
+                    |
+                </span>
+
+                <span>
+                    Fleet telemetry services available
+                </span>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script>
+
+        const API_URL =
+            "https://ev-fleet-intelligence-9ysb.onrender.com";
+
+
+        const setupForm =
+            document.getElementById("setupForm");
+
+        const setupError =
+            document.getElementById("setupError");
+
+
+        setupForm.addEventListener("submit", async (event) => {
+
+            event.preventDefault();
+
+            const username =
+                document.getElementById("setupUsername").value.trim();
+
+            const password =
+                document.getElementById("setupPassword").value;
+
+            const confirmPassword =
+                document.getElementById("setupConfirmPassword").value;
+
+
+            setupError.textContent = "";
+
+
+            if (password !== confirmPassword) {
+
+                setupError.textContent =
+                    "Passwords do not match.";
+
+                return;
+            }
+
+
+            if (password.length < 8) {
+
+                setupError.textContent =
+                    "Password must contain at least 8 characters.";
+
+                return;
+            }
+
+
+            try {
+
+                const response = await fetch(
+                    `${API_URL}/auth/setup`,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+                            password: password
+                        })
+                    }
+                );
+
+
+                const data = await response.json();
+
+
+                if (!response.ok) {
+
+                    setupError.textContent =
+                        data.detail ||
+                        "Unable to create admin account.";
+
+                    return;
+                }
+
+
+                alert(
+                    "Admin account created successfully.\n\n" +
+                    "You can now sign in."
+                );
+
+
+                window.location.href =
+                    "login.html";
+
+
+            } catch (error) {
+
+                setupError.textContent =
+                    "Unable to connect to the server.";
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

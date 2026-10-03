@@ -7,7 +7,14 @@ from collections import Counter
 import time
 
 from backend.battery_health import calculate_battery_health
-from backend.database import ( get_all_telemetry, get_vehicle_ids, get_vehicle_telemetry )
+from backend.database import (
+    get_all_telemetry,
+    get_vehicle_ids,
+    get_vehicle_telemetry,
+    get_admin_user,
+    create_admin_user
+)
+
 from backend.predictive_maintenance import (
     calculate_maintenance_risk
 )
@@ -17,6 +24,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from backend.auth import (
     verify_password,
+    hash_password,
     create_access_token,
     get_current_user
 )
@@ -40,11 +48,6 @@ app.add_middleware(
 #temporay define an admin
 
 load_dotenv()
-
-ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
-ADMIN_PASSWORD_HASH = os.getenv(
-    "ADMIN_PASSWORD_HASH"
-)
 
 # Load ML model package
 model_package = joblib.load(
@@ -130,15 +133,67 @@ def home():
     }
 
 
+# -----------------------------
+# Initial Admin Setup
+# -----------------------------
+
+class AdminSetup(BaseModel):
+    username: str
+    password: str
+
+
+@app.post("/auth/setup")
+def setup_admin(data: AdminSetup):
+
+    existing_admin = get_admin_user()
+
+    if existing_admin:
+        raise HTTPException(
+            status_code=403,
+            detail="Admin account already exists"
+        )
+
+    username = data.username.strip()
+    password = data.password
+
+    if len(username) < 3:
+        raise HTTPException(
+            status_code=400,
+            detail="Username must be at least 3 characters"
+        )
+
+    if len(password) < 8:
+        raise HTTPException(
+            status_code=400,
+            detail="Password must be at least 8 characters"
+        )
+
+    password_hash = hash_password(password)
+
+    create_admin_user(
+        username,
+        password_hash
+    )
+
+    return {
+        "message": "Admin account created successfully"
+    }
 #Login ENDPOINT
 
-
 @app.post("/auth/login")
-def login(
-    form_data: OAuth2PasswordRequestForm = Depends()
-):
+def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
-    if form_data.username != ADMIN_USERNAME:
+    admin = get_admin_user()
+
+    if not admin:
+        raise HTTPException(
+            status_code=403,
+            detail="No admin account configured. Complete initial setup."
+        )
+
+    admin_username, admin_password_hash = admin
+
+    if form_data.username != admin_username:
         raise HTTPException(
             status_code=401,
             detail="Invalid username or password"
@@ -146,7 +201,7 @@ def login(
 
     if not verify_password(
         form_data.password,
-        ADMIN_PASSWORD_HASH
+        admin_password_hash
     ):
         raise HTTPException(
             status_code=401,
@@ -161,8 +216,6 @@ def login(
         "access_token": access_token,
         "token_type": "bearer"
     }
-
-
 
 # -----------------------------
 # Fault + Health Prediction

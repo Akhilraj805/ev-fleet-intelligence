@@ -2352,7 +2352,34 @@ html[data-theme="light"] .stats .card:hover {
     align-items: center;
     justify-content: space-between;
 
+    gap: 16px;
+
     margin-bottom: 18px;
+}
+
+.login-options-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    margin-left: auto;
+}
+
+.setup-link {
+    display: inline-flex;
+    align-items: center;
+
+    color: var(--text-muted);
+    text-decoration: none;
+
+    font-size: 11px;
+    white-space: nowrap;
+
+    transition: color 0.2s ease;
+}
+
+.setup-link:hover {
+    color: var(--accent);
 }
 
 
@@ -4327,4 +4354,64 @@ html[data-theme="light"] .topbar {
     .main-nav {
         top: 112px !important;
     }
+}
+.setup-link {
+    display: block;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+.setup-link:hover {
+    text-decoration: underline;
+}
+@media (max-width: 600px) {
+
+    .login-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .login-options-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 0;
+    }
+}
+/* =========================================================
+   LOGIN FORGOT PASSWORD
+   ========================================================= */
+
+.forgot-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 12px;
+}
+
+.forgot-password {
+    padding: 0;
+
+    background: transparent;
+    border: none;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.forgot-password:hover {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    color: var(--accent);
 }

@@ -121,3 +121,56 @@ def get_vehicle_ids():
         )
 
     return vehicles
+
+# -----------------------------
+# Admin User Management
+# -----------------------------
+
+def initialize_admin_table():
+
+    with get_connection() as connection:
+
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS admin_users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL
+            )
+            """
+        )
+
+        connection.commit()
+
+
+def get_admin_user():
+
+    initialize_admin_table()
+
+    with get_connection() as connection:
+
+        return connection.execute(
+            """
+            SELECT username, password_hash
+            FROM admin_users
+            LIMIT 1
+            """
+        ).fetchone()
+
+
+def create_admin_user(username, password_hash):
+
+    initialize_admin_table()
+
+    with get_connection() as connection:
+
+        connection.execute(
+            """
+            INSERT INTO admin_users
+            (username, password_hash)
+            VALUES (?, ?)
+            """,
+            (username, password_hash)
+        )
+
+        connection.commit()
