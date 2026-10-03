@@ -3224,3 +3224,19 @@ if (mobileMenuToggle && mainNav) {
             );
         });
 }
+// =========================================================
+// FORGOT PASSWORD
+// =========================================================
+
+const forgotPassword = document.getElementById("forgotPassword");
+
+if (forgotPassword) {
+    forgotPassword.addEventListener("click", () => {
+        alert(
+            "Password recovery\n\n" +
+            "This is an admin-only system.\n\n" +
+            "To reset the admin password, update " +
+            "ADMIN_PASSWORD_HASH in the Render environment variables."
+        );
+    });
+}
